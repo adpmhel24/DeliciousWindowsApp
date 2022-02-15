@@ -28,6 +28,7 @@ class MainApp extends StatelessWidget {
         },
         theme: ThemeData(
           fontFamily: GoogleFonts.merriweather().fontFamily,
+          visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         routeInformationParser: _appRouter.defaultRouteParser(),
         routerDelegate: _appRouter.delegate(),

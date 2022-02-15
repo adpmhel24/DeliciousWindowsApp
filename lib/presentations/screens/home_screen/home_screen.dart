@@ -5,12 +5,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return NavigationView(
-      appBar: const NavigationAppBar(
-        title: Text("Home"),
-      ),
-      pane: NavigationPane(
-        displayMode: PaneDisplayMode.auto,
+    return const ScaffoldPage(
+      header: PageHeader(
+        title: Text('Home'),
       ),
     );
   }
