@@ -24,7 +24,6 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return NavigationView(
       appBar: const NavigationAppBar(
-        title: Text("Home"),
         automaticallyImplyLeading: false,
       ),
       pane: NavigationPane(

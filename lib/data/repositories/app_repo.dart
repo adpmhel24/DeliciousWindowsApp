@@ -2,7 +2,7 @@ import './repositories.dart';
 
 class AppRepo {
   static final authRepository = AuthRepository();
-  // static final productsRepository = ProductsRepo();
+  static final ordersReposistory = OrdersRepository();
   // static final cartRepository = CartRepo();
   // static final customerRepository = CustomerRepo();
   // static final salesTypeRepository = SalesTypeRepo();

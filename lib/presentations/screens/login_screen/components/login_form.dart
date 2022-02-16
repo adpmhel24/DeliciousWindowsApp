@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:formz/formz.dart';
 
-import '../../../widgets/dialog_error.dart';
+import '../../../widgets/custom_dialog.dart';
 import '../bloc/bloc.dart';
 
 class LoginForm extends StatefulWidget {
