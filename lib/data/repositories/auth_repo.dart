@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 
 import '../api_services/login_api.dart';
 import '../models/models.dart';
+import 'app_repo.dart';
 
 class AuthRepository extends ChangeNotifier {
   final LoginAPI _loginAPI = LoginAPI();
@@ -32,7 +33,7 @@ class AuthRepository extends ChangeNotifier {
         prefs.setString("userData", json.encode(_currentUser!.toJson()));
 
         // Load or resources after autheticate
-        // await AppRepo().init();
+        await AppRepo().init();
 
         // Change the value of authenticated then notify
         _authenticated = true;

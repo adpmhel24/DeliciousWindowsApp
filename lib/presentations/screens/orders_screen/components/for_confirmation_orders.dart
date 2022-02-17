@@ -10,6 +10,7 @@ import '../../../../data/repositories/app_repo.dart';
 import '../../../utils/constant.dart';
 import '../../../utils/currency_formater.dart';
 import '../../../widgets/custom_dialog.dart';
+import '../../../widgets/custom_large_dialog.dart';
 import 'order_details/order_details.dart';
 
 class ForConfirmation extends StatefulWidget {
@@ -264,11 +265,8 @@ class _ForConfirmationState extends State<ForConfirmation> {
                     context: context,
                     barrierDismissible: true,
                     builder: (context) {
-                      return ContentDialog(
-                        title: const Text("Order Details"),
-                        constraints: const BoxConstraints(
-                            maxWidth: 1100, maxHeight: 600),
-                        content: OrderDetails(
+                      return LargeDialog(
+                        child: OrderDetails(
                           order: AppRepo.ordersReposistory.order,
                         ),
                       );

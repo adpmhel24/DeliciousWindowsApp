@@ -62,7 +62,7 @@ class OrderRowTableHeader {
   static const id = 'Id';
   static const itemCode = 'Item Code';
   static const quantity = 'Quantity';
-  static const uom = 'Unit Of Measure';
+  static const uom = 'UoM';
   static const unitPrice = 'Unit Price';
   static const discAmount = 'Discount Amount';
   static const discprcnt = 'Discount %';

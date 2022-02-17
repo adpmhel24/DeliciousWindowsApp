@@ -1,233 +1,27 @@
-// import 'package:delicious_windows_app/data/models/models.dart';
-// import 'package:delicious_windows_app/data/models/orders/order_model.dart';
-// import 'package:fluent_ui/fluent_ui.dart';
-// import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:intl/intl.dart';
+// import 'package:collection/collection.dart';
+// import 'package:datagrid_editing/model/employee.dart';
+// import 'package:flutter/material.dart';
+// import 'package:flutter/services.dart';
 // import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-// import '../../../utils/currency_formater.dart';
-// import '../../../widgets/info_label_row.dart';
-
-// class ForConfirmDetails extends StatefulWidget {
-//   const ForConfirmDetails({Key? key, required this.order}) : super(key: key);
-//   final OrderModel order;
-
-//   @override
-//   State<ForConfirmDetails> createState() => _ForConfirmDetailsState();
-// }
-
-// class _ForConfirmDetailsState extends State<ForConfirmDetails> {
-//   final TextEditingController _idController = TextEditingController();
-//   final TextEditingController _discTypeController = TextEditingController();
-//   final TextEditingController _dispWhseController = TextEditingController();
-//   final TextEditingController _salesTypeController = TextEditingController();
-
-//   @override
-//   void initState() {
-//     _idController.text = '1';
-//     super.initState();
-//   }
-
-//   @override
-//   void dispose() {
-//     _idController.dispose();
-//     _discTypeController.dispose();
-//     _dispWhseController.dispose();
-//     _salesTypeController.dispose();
-//     super.dispose();
-//   }
-
-//   final List<String> _dispatchingWhse = const [
-//     "LC Productoin",
-//     "LC Whse",
-//     "E Rod"
-//   ];
-
-//   String? comboBoxValue;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Mica(
-//       child: Padding(
-//         padding: const EdgeInsets.all(8.0),
-//         child: Column(
-//           mainAxisSize: MainAxisSize.min,
-//           children: [
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Flexible(
-//                   child: Column(
-//                     mainAxisSize: MainAxisSize.min,
-//                     crossAxisAlignment: CrossAxisAlignment.start,
-//                     children: [
-//                       InfoLabelRow(
-//                         label: "Order Id:",
-//                         child: Text(
-//                           widget.order.id.toString(),
-//                           overflow: TextOverflow.ellipsis,
-//                         ),
-//                       ),
-//                       InfoLabelRow(
-//                         label: "Transaction Date:",
-//                         child: Text(
-//                           DateFormat("MM/dd/yyyy")
-//                               .format(widget.order.transdate ?? DateTime.now()),
-//                           overflow: TextOverflow.ellipsis,
-//                         ),
-//                       ),
-//                       InfoLabelRow(
-//                         label: "Delivery Date:",
-//                         child: Text(
-//                           DateFormat("MM/dd/yyyy").format(
-//                               widget.order.deliveryDate ?? DateTime.now()),
-//                           overflow: TextOverflow.ellipsis,
-//                         ),
-//                       ),
-//                       InfoLabelRow(
-//                         label: "Customer Code:",
-//                         child: Text(
-//                           widget.order.custCode ?? "",
-//                           overflow: TextOverflow.ellipsis,
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//                 SizedBox(
-//                   width: 50.w,
-//                 ),
-//                 Expanded(
-//                   child: Column(
-//                     crossAxisAlignment: CrossAxisAlignment.start,
-//                     mainAxisSize: MainAxisSize.min,
-//                     children: [
-//                       InfoLabelRow(
-//                         label: "Dispatching Whse:",
-//                         child: Combobox<String>(
-//                           placeholder: const Text('Select Warehouse'),
-//                           // isExpanded: true,
-//                           items: _dispatchingWhse
-//                               .map(
-//                                 (e) => ComboboxItem(
-//                                   child: Text(e),
-//                                   value: e,
-//                                 ),
-//                               )
-//                               .toList(),
-//                           value: _dispWhseController.text.isEmpty
-//                               ? null
-//                               : _dispWhseController.text,
-//                           onChanged: (value) {
-//                             if (value != null) {
-//                               setState(() => _dispWhseController.text = value);
-//                             }
-//                           },
-//                         ),
-//                       ),
-//                       SizedBox(
-//                         height: 10.h,
-//                       ),
-//                       InfoLabelRow(
-//                         label: "Discount Type:",
-//                         child: Combobox<String>(
-//                           placeholder: const Text('Select Discount Type'),
-//                           // isExpanded: true,
-//                           items: _dispatchingWhse
-//                               .map(
-//                                 (e) => ComboboxItem(
-//                                   child: Text(e),
-//                                   value: e,
-//                                 ),
-//                               )
-//                               .toList(),
-//                           value: comboBoxValue,
-//                           onChanged: (value) {
-//                             if (value != null) {
-//                               setState(() => comboBoxValue = value);
-//                             }
-//                           },
-//                         ),
-//                       ),
-//                       SizedBox(
-//                         height: 10.h,
-//                       ),
-//                       InfoLabelRow(
-//                         label: "Sales Type:",
-//                         child: Combobox<String>(
-//                           placeholder: const Text('Select Sales Type'),
-//                           // isExpanded: true,
-//                           items: _dispatchingWhse
-//                               .map(
-//                                 (e) => ComboboxItem(
-//                                   child: Text(e),
-//                                   value: e,
-//                                 ),
-//                               )
-//                               .toList(),
-//                           value: comboBoxValue,
-//                           onChanged: (value) {
-//                             if (value != null) {
-//                               setState(() => comboBoxValue = value);
-//                             }
-//                           },
-//                         ),
-//                       ),
-//                     ],
-//                   ),
-//                 ),
-//               ],
-//             ),
-//             TextBox(
-//               enabled: false,
-//               controller: TextEditingController(text: '1'),
-//               prefix: const Text("Order Id:"),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-// class OrdersDataSource extends DataGridSource {
-//   OrdersDataSource(ordersContext, {required List<OrderRowModel> orders}) {
-//     dataGridRows = orders
-//         .map<DataGridRow>(
-//           (e) => DataGridRow(cells: [
-//             DataGridCell<int>(columnName: OrderRowTableHeader.id, value: e.id),
-//             DataGridCell<String>(
-//                 columnName: OrderRowTableHeader.itemCode, value: e.itemCode),
-//             DataGridCell<double>(
-//                 columnName: OrderRowTableHeader.quantity, value: e.quantity),
-//             DataGridCell<String>(
-//                 columnName: OrderRowTableHeader.uom, value: e.uom),
-//             DataGridCell<String>(
-//               columnName: OrderRowTableHeader.unitPrice,
-//               value: formatStringToDecimal(e.unitPrice.toString(),
-//                   hasCurrency: true),
-//             ),
-//             DataGridCell<String>(
-//               columnName: OrderRowTableHeader.discAmount,
-//               value: formatStringToDecimal(e.discAmount.toString(),
-//                   hasCurrency: true),
-//             ),
-//             DataGridCell<String>(
-//               columnName: OrderRowTableHeader.subtotal,
-//               value: formatStringToDecimal(e.subtotal.toString(),
-//                   hasCurrency: true),
-//             ),
-//             DataGridCell<String>(
-//               columnName: OrderRowTableHeader.comments,
-//               value: e.comments,
-//             ),
-//           ]),
-//         )
+// class EmployeeDataSource extends DataGridSource {
+//   EmployeeDataSource(this._employees) {
+//     dataGridRows = _employees
+//         .map<DataGridRow>((dataGridRow) => dataGridRow.getDataGridRow())
 //         .toList();
 //   }
 
+//   List<Employee> _employees = [];
+
 //   List<DataGridRow> dataGridRows = [];
+
+//   /// Helps to hold the new value of all editable widget.
+//   /// Based on the new value we will commit the new value into the corresponding
+//   /// [DataGridCell] on [onSubmitCell] method.
+//   dynamic newCellValue;
+
+//   /// Help to control the editable text in [TextField] widget.
+//   TextEditingController editingController = TextEditingController();
 
 //   @override
 //   List<DataGridRow> get rows => dataGridRows;
@@ -237,15 +31,119 @@
 //     return DataGridRowAdapter(
 //         cells: row.getCells().map<Widget>((dataGridCell) {
 //       return Container(
-//         alignment: (dataGridCell.columnName == OrderRowTableHeader.id ||
-//                 dataGridCell.columnName == OrderRowTableHeader.itemCode ||
-//                 dataGridCell.columnName == OrderRowTableHeader.comments ||
-//                 dataGridCell.columnName == OrderRowTableHeader.uom)
-//             ? Alignment.centerRight
-//             : Alignment.centerLeft,
-//         padding: const EdgeInsets.all(16.0),
-//         child: Text(dataGridCell.value.toString()),
-//       );
+//           alignment: (dataGridCell.columnName == 'id' ||
+//                   dataGridCell.columnName == 'salary')
+//               ? Alignment.centerRight
+//               : Alignment.centerLeft,
+//           padding: EdgeInsets.symmetric(horizontal: 16.0),
+//           child: Text(
+//             dataGridCell.value.toString(),
+//             overflow: TextOverflow.ellipsis,
+//           ));
 //     }).toList());
+//   }
+
+//   @override
+//   void onCellSubmit(DataGridRow dataGridRow, RowColumnIndex rowColumnIndex,
+//       GridColumn column) {
+//     final dynamic oldValue = dataGridRow
+//             .getCells()
+//             .firstWhereOrNull((DataGridCell dataGridCell) =>
+//                 dataGridCell.columnName == column.columnName)
+//             ?.value ??
+//         '';
+
+//     final int dataRowIndex = dataGridRows.indexOf(dataGridRow);
+
+//     if (newCellValue == null || oldValue == newCellValue) {
+//       return;
+//     }
+
+//     if (column.columnName == 'id') {
+//       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+//           DataGridCell<int>(columnName: 'id', value: newCellValue);
+//       _employees[dataRowIndex].id = newCellValue as int;
+//     } else if (column.columnName == 'name') {
+//       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+//           DataGridCell<String>(columnName: 'name', value: newCellValue);
+//       _employees[dataRowIndex].name = newCellValue.toString();
+//     } else if (column.columnName == 'designation') {
+//       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+//           DataGridCell<String>(columnName: 'designation', value: newCellValue);
+//       _employees[dataRowIndex].designation = newCellValue.toString();
+//     } else {
+//       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+//           DataGridCell<int>(columnName: 'salary', value: newCellValue);
+//       _employees[dataRowIndex].salary = newCellValue as int;
+//     }
+//   }
+
+//   @override
+//   bool canSubmitCell(DataGridRow dataGridRow, RowColumnIndex rowColumnIndex,
+//       GridColumn column) {
+//     // Return false, to retain in edit mode.
+//     return true; // or super.canSubmitCell(dataGridRow, rowColumnIndex, column);
+//   }
+
+//   @override
+//   Widget? buildEditWidget(DataGridRow dataGridRow,
+//       RowColumnIndex rowColumnIndex, GridColumn column, CellSubmit submitCell) {
+//     // Text going to display on editable widget
+//     final String displayText = dataGridRow
+//             .getCells()
+//             .firstWhereOrNull((DataGridCell dataGridCell) =>
+//                 dataGridCell.columnName == column.columnName)
+//             ?.value
+//             ?.toString() ??
+//         '';
+
+//     // The new cell value must be reset.
+//     // To avoid committing the [DataGridCell] value that was previously edited
+//     // into the current non-modified [DataGridCell].
+//     newCellValue = null;
+
+//     final bool isNumericType =
+//         column.columnName == 'id' || column.columnName == 'salary';
+
+//     // Holds regular expression pattern based on the column type.
+//     final RegExp regExp = _getRegExp(isNumericType, column.columnName);
+
+//     return Container(
+//       padding: const EdgeInsets.all(8.0),
+//       alignment: isNumericType ? Alignment.centerRight : Alignment.centerLeft,
+//       child: TextField(
+//         autofocus: true,
+//         controller: editingController..text = displayText,
+//         textAlign: isNumericType ? TextAlign.right : TextAlign.left,
+//         autocorrect: false,
+//         decoration: InputDecoration(
+//           contentPadding: const EdgeInsets.fromLTRB(0, 0, 0, 16.0),
+//         ),
+//         inputFormatters: <TextInputFormatter>[
+//           FilteringTextInputFormatter.allow(regExp)
+//         ],
+//         keyboardType: isNumericType ? TextInputType.number : TextInputType.text,
+//         onChanged: (String value) {
+//           if (value.isNotEmpty) {
+//             if (isNumericType) {
+//               newCellValue = int.parse(value);
+//             } else {
+//               newCellValue = value;
+//             }
+//           } else {
+//             newCellValue = null;
+//           }
+//         },
+//         onSubmitted: (String value) {
+//           /// Call [CellSubmit] callback to fire the canSubmitCell and
+//           /// onCellSubmit to commit the new value in single place.
+//           submitCell();
+//         },
+//       ),
+//     );
+//   }
+
+//   RegExp _getRegExp(bool isNumericKeyBoard, String columnName) {
+//     return isNumericKeyBoard ? RegExp('[0-9]') : RegExp('[a-zA-Z ]');
 //   }
 // }
