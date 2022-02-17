@@ -1,4 +1,5 @@
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter/services.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../../../data/models/models.dart';
@@ -13,7 +14,8 @@ class OrderRowsTable extends StatefulWidget {
 }
 
 class _OrderRowsTableState extends State<OrderRowsTable> {
-  late OrderRowTableDataSource _dataSource;
+  late OrderRowDetailsDataSource _dataSource;
+  late DataGridController _dataGridController;
 
   late Map<String, double> columnWidths = {
     OrderRowTableHeader.id: double.nan,
@@ -151,8 +153,16 @@ class _OrderRowsTableState extends State<OrderRowsTable> {
 
   @override
   void initState() {
-    _dataSource = OrderRowTableDataSource(widget.orderRows);
+    _dataSource = OrderRowDetailsDataSource(widget.orderRows);
+    _dataGridController = DataGridController();
+
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _dataGridController.dispose();
+    super.dispose();
   }
 
   @override
@@ -167,6 +177,7 @@ class _OrderRowsTableState extends State<OrderRowsTable> {
         editingGestureType: EditingGestureType.tap,
         selectionMode: SelectionMode.single,
         navigationMode: GridNavigationMode.cell,
+        controller: _dataGridController,
         frozenColumnsCount: 1,
         allowColumnsResizing: true,
         onColumnResizeUpdate: (ColumnResizeUpdateDetails details) {
@@ -177,7 +188,7 @@ class _OrderRowsTableState extends State<OrderRowsTable> {
         },
         isScrollbarAlwaysShown: true,
         columns: columnNames(),
-        columnWidthMode: ColumnWidthMode.auto,
+        columnWidthMode: ColumnWidthMode.fill,
         onQueryRowHeight: (details) {
           return details.getIntrinsicRowHeight(details.rowIndex);
         },
@@ -187,75 +198,7 @@ class _OrderRowsTableState extends State<OrderRowsTable> {
 }
 
 class OrderRowDetailsDataSource extends DataGridSource {
-  OrderRowDetailsDataSource({required List<OrderRowModel> orders}) {
-    dataGridRows = orders
-        .map<DataGridRow>(
-          (e) => DataGridRow(cells: [
-            DataGridCell<int>(columnName: OrderRowTableHeader.id, value: e.id),
-            DataGridCell<String>(
-                columnName: OrderRowTableHeader.itemCode, value: e.itemCode),
-            DataGridCell<double>(
-                columnName: OrderRowTableHeader.quantity, value: e.quantity),
-            DataGridCell<String>(
-                columnName: OrderRowTableHeader.uom, value: e.uom),
-            DataGridCell<String>(
-              columnName: OrderRowTableHeader.unitPrice,
-              value: formatStringToDecimal(e.unitPrice.toString(),
-                  hasCurrency: true),
-            ),
-            DataGridCell<String>(
-              columnName: OrderRowTableHeader.discAmount,
-              value: formatStringToDecimal(e.discAmount.toString(),
-                  hasCurrency: true),
-            ),
-            DataGridCell<String>(
-              columnName: OrderRowTableHeader.discprcnt,
-              value: e.discprcnt!.toStringAsFixed(2),
-            ),
-            DataGridCell<String>(
-              columnName: OrderRowTableHeader.subtotal,
-              value: formatStringToDecimal(e.subtotal.toString(),
-                  hasCurrency: true),
-            ),
-            DataGridCell<String>(
-              columnName: OrderRowTableHeader.comments,
-              value: e.comments,
-            ),
-          ]),
-        )
-        .toList();
-  }
-
-  List<DataGridRow> dataGridRows = [];
-
-  @override
-  List<DataGridRow> get rows => dataGridRows;
-
-  @override
-  DataGridRowAdapter? buildRow(DataGridRow row) {
-    return DataGridRowAdapter(
-        cells: row.getCells().map<Widget>((dataGridCell) {
-      return Container(
-        alignment: (dataGridCell.columnName == OrderRowTableHeader.id ||
-                dataGridCell.columnName == OrderRowTableHeader.itemCode ||
-                dataGridCell.columnName == OrderRowTableHeader.comments ||
-                dataGridCell.columnName == OrderRowTableHeader.uom)
-            ? Alignment.centerLeft
-            : Alignment.centerRight,
-        padding: const EdgeInsets.all(16.0),
-        child: Text(dataGridCell.value.toString()),
-      );
-    }).toList());
-  }
-}
-
-class OrderRowTableDataSource extends DataGridSource {
-  dynamic newCellValue;
-  TextEditingController editingController = TextEditingController();
-  List<DataGridRow> dataGridRows = [];
-  final List<OrderRowModel> _orders;
-
-  OrderRowTableDataSource(this._orders) {
+  OrderRowDetailsDataSource(this._orders) {
     dataGridRows = _orders
         .map<DataGridRow>(
           (e) => DataGridRow(cells: [
@@ -268,13 +211,15 @@ class OrderRowTableDataSource extends DataGridSource {
                 columnName: OrderRowTableHeader.uom, value: e.uom),
             DataGridCell<String>(
               columnName: OrderRowTableHeader.unitPrice,
-              value: formatStringToDecimal(e.unitPrice.toString(),
-                  hasCurrency: true),
+              value: formatStringToDecimal(
+                e.unitPrice.toString(),
+              ),
             ),
             DataGridCell<String>(
               columnName: OrderRowTableHeader.discAmount,
-              value: formatStringToDecimal(e.discAmount.toString(),
-                  hasCurrency: true),
+              value: formatStringToDecimal(
+                e.discAmount.toString(),
+              ),
             ),
             DataGridCell<String>(
               columnName: OrderRowTableHeader.discprcnt,
@@ -282,8 +227,9 @@ class OrderRowTableDataSource extends DataGridSource {
             ),
             DataGridCell<String>(
               columnName: OrderRowTableHeader.subtotal,
-              value: formatStringToDecimal(e.subtotal.toString(),
-                  hasCurrency: true),
+              value: formatStringToDecimal(
+                e.subtotal.toString(),
+              ),
             ),
             DataGridCell<String>(
               columnName: OrderRowTableHeader.comments,
@@ -293,6 +239,20 @@ class OrderRowTableDataSource extends DataGridSource {
         )
         .toList();
   }
+  final List<OrderRowModel> _orders;
+
+  List<DataGridRow> dataGridRows = [];
+
+  /// Helps to hold the new value of all editable widget.
+  /// Based on the new value we will commit the new value into the corresponding
+  /// [DataGridCell] on [onSubmitCell] method.
+  dynamic newCellValue;
+
+  /// Help to control the editable text in [TextField] widget.
+  TextEditingController editingController = TextEditingController();
+
+  @override
+  List<DataGridRow> get rows => dataGridRows;
 
   @override
   DataGridRowAdapter? buildRow(DataGridRow row) {
@@ -314,9 +274,12 @@ class OrderRowTableDataSource extends DataGridSource {
   @override
   void onCellSubmit(DataGridRow dataGridRow, RowColumnIndex rowColumnIndex,
       GridColumn column) {
-    final dynamic oldValue = dataGridRow.getCells().firstWhere(
-        (DataGridCell dataGridCell) =>
-            dataGridCell.columnName == column.columnName);
+    final dynamic oldValue = dataGridRow
+            .getCells()
+            .firstWhere((DataGridCell dataGridCell) =>
+                dataGridCell.columnName == column.columnName)
+            .value ??
+        '';
 
     final int dataRowIndex = dataGridRows.indexOf(dataGridRow);
 
@@ -324,17 +287,70 @@ class OrderRowTableDataSource extends DataGridSource {
       return;
     }
 
-    if (column.columnName == OrderRowTableHeader.discAmount) {
+    if (column.columnName == OrderRowTableHeader.id) {
+      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell<int>(
+              columnName: OrderRowTableHeader.id, value: newCellValue);
+      _orders[dataRowIndex].id = newCellValue as int;
+    }
+    // Item Code
+    else if (column.columnName == OrderRowTableHeader.itemCode) {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<String>(
+              columnName: OrderRowTableHeader.itemCode, value: newCellValue);
+      _orders[dataRowIndex].itemCode = newCellValue.toString();
+    }
+    // Quantity
+    else if (column.columnName == OrderRowTableHeader.quantity) {
+      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell<double>(
+              columnName: OrderRowTableHeader.quantity, value: newCellValue);
+      _orders[dataRowIndex].quantity = newCellValue as double;
+    }
+    // UoM
+    else if (column.columnName == OrderRowTableHeader.uom) {
+      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell<String>(
+              columnName: OrderRowTableHeader.uom, value: newCellValue);
+      _orders[dataRowIndex].uom = newCellValue as String;
+    }
+    // Unit Price
+    else if (column.columnName == OrderRowTableHeader.unitPrice) {
+      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell<double>(
+              columnName: OrderRowTableHeader.unitPrice, value: newCellValue);
+      _orders[dataRowIndex].unitPrice = newCellValue as double;
+    }
+    // Discount Amount
+    else if (column.columnName == OrderRowTableHeader.discAmount) {
+      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell<double>(
               columnName: OrderRowTableHeader.discAmount, value: newCellValue);
       _orders[dataRowIndex].discAmount = newCellValue as double;
-    } else if (column.columnName == OrderRowTableHeader.discprcnt) {
+    }
+    // Discount Percentage
+    else if (column.columnName == OrderRowTableHeader.discprcnt) {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-          DataGridCell<String>(
+          DataGridCell<double>(
               columnName: OrderRowTableHeader.discprcnt, value: newCellValue);
-      _orders[dataRowIndex].discprcnt = newCellValue;
-    } else if (column.columnName == OrderRowTableHeader.comments) {
+      _orders[dataRowIndex].discprcnt = newCellValue as double;
+    }
+    // Subtotal
+    else if (column.columnName == OrderRowTableHeader.subtotal) {
+      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell<double>(
+              columnName: OrderRowTableHeader.subtotal, value: newCellValue);
+      _orders[dataRowIndex].subtotal = newCellValue as double;
+    }
+    // Subtotal
+    else if (column.columnName == OrderRowTableHeader.subtotal) {
+      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
+          DataGridCell<double>(
+              columnName: OrderRowTableHeader.subtotal, value: newCellValue);
+      _orders[dataRowIndex].subtotal = newCellValue as double;
+    }
+    // Comments
+    else if (column.columnName == OrderRowTableHeader.comments) {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<String>(
               columnName: OrderRowTableHeader.comments, value: newCellValue);
@@ -366,28 +382,28 @@ class OrderRowTableDataSource extends DataGridSource {
     // into the current non-modified [DataGridCell].
     newCellValue = null;
 
-    final bool isTextAlignRight =
+    final bool isNumericType =
         column.columnName == OrderRowTableHeader.discAmount ||
             column.columnName == OrderRowTableHeader.discprcnt;
-
-    final bool isNumericKeyBoardType =
-        column.columnName == OrderRowTableHeader.discAmount ||
-            column.columnName == OrderRowTableHeader.discprcnt;
+    // Holds regular expression pattern based on the column type.
+    final RegExp regExp = _getRegExp(isNumericType, column.columnName);
 
     return Container(
       padding: const EdgeInsets.all(8.0),
-      alignment:
-          isTextAlignRight ? Alignment.centerRight : Alignment.centerLeft,
+      alignment: isNumericType ? Alignment.centerRight : Alignment.centerLeft,
       child: TextFormBox(
         autofocus: true,
         controller: editingController..text = displayText,
-        textAlign: isTextAlignRight ? TextAlign.right : TextAlign.left,
-        keyboardType:
-            isNumericKeyBoardType ? TextInputType.number : TextInputType.text,
+        textAlign: isNumericType ? TextAlign.right : TextAlign.left,
+        autocorrect: false,
+        inputFormatters: <TextInputFormatter>[
+          FilteringTextInputFormatter.allow(regExp)
+        ],
+        keyboardType: isNumericType ? TextInputType.number : TextInputType.text,
         onChanged: (String value) {
           if (value.isNotEmpty) {
-            if (isNumericKeyBoardType) {
-              newCellValue = int.parse(value);
+            if (isNumericType) {
+              newCellValue = double.parse(value);
             } else {
               newCellValue = value;
             }
@@ -396,12 +412,15 @@ class OrderRowTableDataSource extends DataGridSource {
           }
         },
         onFieldSubmitted: (String value) {
-          // In Mobile Platform.
-          // Call [CellSubmit] callback to fire the canSubmitCell and
-          // onCellSubmit to commit the new value in single place.
+          /// Call [CellSubmit] callback to fire the canSubmitCell and
+          /// onCellSubmit to commit the new value in single place.
           submitCell();
         },
       ),
     );
+  }
+
+  RegExp _getRegExp(bool isNumericKeyBoard, String columnName) {
+    return isNumericKeyBoard ? RegExp('[0-9]') : RegExp('[a-zA-Z ]');
   }
 }
