@@ -5,18 +5,14 @@ part 'order_model.g.dart';
 
 @JsonSerializable()
 class OrderModel extends OrderHeaderModel {
-  static List<OrderRowModel?> _orderRowFromJson(List<dynamic> data) {
-    if (data.isNotEmpty) {
-      return data.map((e) => OrderRowModel.fromJson(e!)).toList();
-    } else {
-      return [];
-    }
+  static List<OrderRowModel> _orderRowFromJson(List<dynamic> data) {
+    return data.map((e) => OrderRowModel.fromJson(e)).toList();
   }
 
   @JsonKey(fromJson: _orderRowFromJson)
-  List<OrderRowModel?>? rows;
+  List<OrderRowModel> rows;
 
-  OrderModel({this.rows}) : super();
+  OrderModel({required this.rows}) : super();
 
   factory OrderModel.fromJson(Map<String, dynamic> json) =>
       _$OrderModelFromJson(json);

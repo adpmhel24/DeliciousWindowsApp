@@ -6,10 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../../../data/repositories/app_repo.dart';
 import '../../../utils/constant.dart';
 import '../../../utils/currency_formater.dart';
 import '../../../widgets/custom_dialog.dart';
-import 'for_confirm_details.dart';
+import 'order_details/order_details.dart';
 
 class ForConfirmation extends StatefulWidget {
   const ForConfirmation({Key? key, required this.gridKey}) : super(key: key);
@@ -257,15 +258,19 @@ class _ForConfirmationState extends State<ForConfirmation> {
                       .dataGridRows[details.rowColumnIndex.rowIndex - 1]
                       .getCells()[0]
                       .value;
-                  // await AppRepo.ordersReposistory.fetchOrderById(id);
+                  await AppRepo.ordersReposistory.fetchOrderById(id);
+
                   showDialog(
                     context: context,
+                    barrierDismissible: true,
                     builder: (context) {
                       return ContentDialog(
-                        constraints: BoxConstraints(
-                            maxWidth: constraints.maxWidth * .75,
-                            maxHeight: constraints.maxHeight),
-                        content: const ForConfirmDetails(),
+                        title: const Text("Order Details"),
+                        constraints: const BoxConstraints(
+                            maxWidth: 1100, maxHeight: 600),
+                        content: OrderDetails(
+                          order: AppRepo.ordersReposistory.order,
+                        ),
                       );
                     },
                   );

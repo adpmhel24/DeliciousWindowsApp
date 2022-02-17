@@ -1,7 +1,6 @@
 import 'package:delicious_windows_app/router/router.gr.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:window_manager/window_manager.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -14,12 +13,9 @@ void main() async {
 
   // Use it only after calling `hiddenWindowAtLaunch`
   windowManager.waitUntilReadyToShow().then((_) async {
-    // Hide window title bar
-    // await windowManager.setTitleBarStyle('hidden');
-    // await windowManager.setSize(const Size(1024, 640));
+    await windowManager.setMinimumSize(const Size(1024, 640));
     await windowManager.center();
     await windowManager.show();
-    // await windowManager.setSkipTaskbar(false);
   });
   runApp(MainApp());
 }
@@ -44,7 +40,29 @@ class MainApp extends StatelessWidget {
           );
         },
         theme: ThemeData(
-          fontFamily: GoogleFonts.merriweather().fontFamily,
+          // fontFamily: GoogleFonts.merriweather().fontFamily,
+          typography: const Typography(
+            titleLarge: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 75, 48, 48),
+            ),
+            title: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Color.fromARGB(255, 75, 48, 48),
+            ),
+            body: TextStyle(
+              fontSize: 15,
+              color: Colors.black,
+              fontWeight: FontWeight.normal,
+            ),
+            bodyLarge: TextStyle(
+              fontSize: 16,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         routeInformationParser: _appRouter.defaultRouteParser(),
