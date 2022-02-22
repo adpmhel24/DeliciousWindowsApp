@@ -1,21 +1,34 @@
-import 'package:delicious_windows_app/data/models/models.dart';
-import 'package:delicious_windows_app/presentations/screens/orders_screen/orders_bloc/blocs.dart';
+import 'package:delicious_windows_app/presentations/screens/orders_screen/order_details/order_bloc/bloc.dart';
+import 'package:delicious_windows_app/presentations/utils/size_config.dart';
+import 'package:provider/provider.dart';
+
+import '../../../../data/repositories/repositories.dart';
+import '../../../utils/responsive.dart';
+import '../../../widgets/remarks_dialog.dart';
+import '/data/models/models.dart';
+import '/presentations/screens/orders_screen/orders_bloc/blocs.dart';
 
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../../../data/repositories/app_repo.dart';
 import '../../../utils/constant.dart';
 import '../../../utils/currency_formater.dart';
 import '../../../widgets/custom_dialog.dart';
 import '../../../widgets/custom_large_dialog.dart';
-import 'order_details/order_details.dart';
+import '../order_details/order_details_edittable/order_details.dart';
 
 class ForConfirmation extends StatefulWidget {
-  const ForConfirmation({Key? key, required this.gridKey}) : super(key: key);
+  const ForConfirmation(
+      {Key? key,
+      required this.gridKey,
+      required this.startDate,
+      required this.endDate})
+      : super(key: key);
   final GlobalKey<SfDataGridState> gridKey;
+  final DateTime startDate;
+  final DateTime endDate;
 
   @override
   State<ForConfirmation> createState() => _ForConfirmationState();
@@ -26,7 +39,9 @@ class _ForConfirmationState extends State<ForConfirmation> {
 
   @override
   void initState() {
-    context.read<OrdersBloc>().add(FetchForConfirmationOrders());
+    context
+        .read<OrdersBloc>()
+        .add(FetchForConfirmationOrders(widget.startDate, widget.endDate));
     super.initState();
   }
 
@@ -224,68 +239,195 @@ class _ForConfirmationState extends State<ForConfirmation> {
   Widget build(BuildContext context) {
     return Container(
       color: Constant.contentBackGroundColor,
-      child: BlocConsumer<OrdersBloc, OrdersState>(
-        listener: (_, state) {
-          if (state is OrdersLoading) {
-            CustomDialog.loading(context);
-          } else if (state is OrdersLoaded) {
-            Navigator.of(context).pop();
-          } else if (state is ErrorState) {
-            CustomDialog.error(context, message: state.messsage);
-          }
-        },
-        builder: (_, state) {
-          if (state is OrdersLoaded) {
-            _ordersDataSource = OrdersDataSource(context, orders: state.orders);
+      child: MultiBlocListener(
+        listeners: [
+          BlocListener<OrdersBloc, OrdersState>(
+            listener: (_, state) {
+              if (state is OrdersLoading) {
+                CustomDialog.loading(context);
+              } else if (state is OrdersLoaded) {
+                Navigator.of(context).pop();
+              } else if (state is ErrorState) {
+                CustomDialog.error(context, message: state.messsage);
+              }
+            },
+          ),
+          BlocListener<OrderBloc, OrderState>(
+            listener: (_, state) {
+              if (state is OrderCancelSubmitting) {
+                CustomDialog.loading(context);
+              } else if (state is OrderCanceledSuccessfully) {
+                widget.gridKey.currentState!.refresh(false);
+                CustomDialog.success(context,
+                    message: "Successfully canceled",
+                    actions: [
+                      Button(
+                          child: const Text('Cancel'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          }),
+                    ]);
+              } else if (state is OrderCancelError) {
+                CustomDialog.error(context, message: state.message);
+              }
+            },
+          ),
+        ],
+        child: BlocBuilder<OrdersBloc, OrdersState>(
+          builder: (_, state) {
+            if (state is OrdersLoaded) {
+              _ordersDataSource =
+                  OrdersDataSource(context, orders: state.orders);
 
-            return LayoutBuilder(builder: (context, constraints) {
-              return SfDataGrid(
-                key: widget.gridKey,
-                source: _ordersDataSource,
-                selectionMode: SelectionMode.single,
-                navigationMode: GridNavigationMode.cell,
-                frozenColumnsCount: 1,
-                allowColumnsResizing: true,
-                onColumnResizeUpdate: (ColumnResizeUpdateDetails details) {
-                  setState(() {
-                    columnWidths[details.column.columnName] = details.width;
-                  });
-                  return true;
-                },
-                onCellTap: (
-                  details,
-                ) async {
-                  int id = _ordersDataSource
-                      .dataGridRows[details.rowColumnIndex.rowIndex - 1]
-                      .getCells()[0]
-                      .value;
-                  await AppRepo.ordersReposistory.fetchOrderById(id);
+              return ChangeNotifierProvider<OrderRepository>(
+                create: (context) => OrderRepository(),
+                child: Builder(
+                  builder: (context) {
+                    return SfDataGrid(
+                      key: widget.gridKey,
+                      source: _ordersDataSource,
+                      selectionMode: SelectionMode.single,
+                      navigationMode: GridNavigationMode.cell,
+                      frozenColumnsCount: 1,
+                      allowColumnsResizing: true,
+                      onColumnResizeUpdate:
+                          (ColumnResizeUpdateDetails details) {
+                        setState(() {
+                          columnWidths[details.column.columnName] =
+                              details.width;
+                        });
+                        return true;
+                      },
+                      allowPullToRefresh: true,
+                      isScrollbarAlwaysShown: true,
+                      columns: columnNames(),
+                      columnWidthMode: ColumnWidthMode.auto,
+                      allowSwiping: true,
+                      swipeMaxOffset: 100.0,
+                      startSwipeActionsBuilder: (BuildContext context,
+                          DataGridRow row, int rowIndex) {
+                        return GestureDetector(
+                          onTap: () {
+                            int id = _ordersDataSource.dataGridRows[rowIndex]
+                                .getCells()[0]
+                                .value;
+                            CustomDialog.warning(context,
+                                message: "Are you sure you want to cancel?",
+                                actions: [
+                                  Button(
+                                      child: const Text('Cancel'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      }),
+                                  Button(
+                                      child: const Text('Okay'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                        showDialog(
+                                            context: context,
+                                            builder: (_) {
+                                              return DialogRemarks(
+                                                submitRemarks:
+                                                    (String remarks) {
+                                                  context.read<OrderBloc>().add(
+                                                        SubmitCancelOrder(
+                                                            orderId: id,
+                                                            orderRepo: Provider
+                                                                .of<OrderRepository>(
+                                                                    context,
+                                                                    listen: false),
+                                                            data: {
+                                                              "comment": remarks
+                                                            }),
+                                                      );
+                                                },
+                                              );
+                                            });
+                                      }),
+                                ]);
+                          },
+                          child: Container(
+                            color: Colors.red.normal,
+                            child: const Center(
+                              child: Icon(FluentIcons.delete),
+                            ),
+                          ),
+                        );
+                      },
+                      onQueryRowHeight: (details) {
+                        return details.getIntrinsicRowHeight(details.rowIndex);
+                      },
+                      onCellDoubleTap: (
+                        details,
+                      ) async {
+                        if (details.rowColumnIndex.rowIndex > 0) {
+                          int id = _ordersDataSource
+                              .dataGridRows[details.rowColumnIndex.rowIndex - 1]
+                              .getCells()[0]
+                              .value;
 
-                  showDialog(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (context) {
-                      return LargeDialog(
-                        child: OrderDetails(
-                          order: AppRepo.ordersReposistory.order,
-                        ),
-                      );
-                    },
-                  );
-                },
-                allowPullToRefresh: true,
-                isScrollbarAlwaysShown: true,
-                columns: columnNames(),
-                columnWidthMode: ColumnWidthMode.auto,
-                onQueryRowHeight: (details) {
-                  return details.getIntrinsicRowHeight(details.rowIndex);
-                },
+                          showDialog(
+                            context: context,
+                            barrierDismissible: true,
+                            builder: (_) {
+                              return LargeDialog(
+                                constraints: Responsive.largeScreen(context)
+                                    ? BoxConstraints(
+                                        maxWidth: SizeConfig.screenWidth * .8,
+                                        maxHeight: SizeConfig.screenHeight * .9)
+                                    : null,
+                                child: ChangeNotifierProvider.value(
+                                  value: Provider.of<OrderRepository>(context),
+                                  child: FutureBuilder(
+                                    future:
+                                        Provider.of<OrderRepository>(context)
+                                            .fetchOrderById(id),
+                                    builder: ((_, snapshot) {
+                                      switch (snapshot.connectionState) {
+                                        case ConnectionState.none:
+                                        case ConnectionState.active:
+                                        case ConnectionState.waiting:
+                                          return const Center(
+                                            child: ProgressRing(),
+                                          );
+                                        case ConnectionState.done:
+                                          if (snapshot.hasError) {
+                                            return const Text(
+                                                'Error Loading Data.');
+                                          }
+                                          return Consumer<OrderRepository>(
+                                              builder: (_, order, child) {
+                                            return OrderDetails(
+                                              orderRepo: order,
+                                              fetchOrders: () => widget
+                                                  .gridKey.currentState!
+                                                  .refresh(false),
+                                              orderBloc:
+                                                  context.read<OrderBloc>(),
+                                              isEdittable: true,
+                                            );
+                                          });
+
+                                        default:
+                                          return Container();
+                                      }
+                                    }),
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }
+                      },
+                    );
+                  },
+                ),
               );
-            });
-          } else {
-            return const Center(child: Text(''));
-          }
-        },
+            } else {
+              return const Center(child: Text(''));
+            }
+          },
+        ),
       ),
     );
   }
@@ -346,7 +488,7 @@ class OrdersDataSource extends DataGridSource {
   @override
   Future<void> handleRefresh() async {
     await Future.delayed(const Duration(milliseconds: 200));
-    _ordersContext.read<OrdersBloc>().add(FetchForConfirmationOrders());
+    _ordersContext.read<OrdersBloc>().add(const FetchForConfirmationOrders());
   }
 
   @override

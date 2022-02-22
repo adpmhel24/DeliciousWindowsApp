@@ -12,8 +12,15 @@ import '../../../utils/currency_formater.dart';
 import '../../../widgets/custom_dialog.dart';
 
 class CanceledOrders extends StatefulWidget {
-  const CanceledOrders({Key? key, required this.gridKey}) : super(key: key);
+  const CanceledOrders(
+      {Key? key,
+      required this.gridKey,
+      required this.startDate,
+      required this.endDate})
+      : super(key: key);
   final GlobalKey<SfDataGridState> gridKey;
+  final DateTime startDate;
+  final DateTime endDate;
 
   @override
   State<CanceledOrders> createState() => _CanceledOrdersState();
@@ -24,7 +31,9 @@ class _CanceledOrdersState extends State<CanceledOrders> {
 
   @override
   void initState() {
-    context.read<OrdersBloc>().add(FetchCanceledOrders());
+    context
+        .read<OrdersBloc>()
+        .add(FetchCanceledOrders(widget.startDate, widget.endDate));
     super.initState();
   }
 
@@ -321,7 +330,7 @@ class OrdersDataSource extends DataGridSource {
   @override
   Future<void> handleRefresh() async {
     await Future.delayed(const Duration(milliseconds: 200));
-    _ordersContext.read<OrdersBloc>().add(FetchCanceledOrders());
+    _ordersContext.read<OrdersBloc>().add(const FetchCanceledOrders());
   }
 
   @override

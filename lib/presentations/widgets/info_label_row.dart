@@ -6,11 +6,13 @@ class InfoLabelRow extends StatelessWidget {
       {Key? key,
       required this.label,
       required this.child,
-      this.crossAxisAlignment})
+      this.crossAxisAlignment,
+      this.labelOverflow})
       : super(key: key);
   final String label;
   final Widget child;
   final CrossAxisAlignment? crossAxisAlignment;
+  final TextOverflow? labelOverflow;
 
   @override
   Widget build(BuildContext context) {
@@ -18,10 +20,12 @@ class InfoLabelRow extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: crossAxisAlignment ?? CrossAxisAlignment.center,
       children: [
-        Text(
-          label,
-          style: FluentTheme.of(context).typography.bodyLarge,
-          overflow: TextOverflow.ellipsis,
+        Expanded(
+          child: Text(
+            label,
+            style: FluentTheme.of(context).typography.bodyLarge,
+            overflow: labelOverflow,
+          ),
         ),
         SizedBox(
           width: 10.w,

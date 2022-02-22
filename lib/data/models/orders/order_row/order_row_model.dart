@@ -4,45 +4,57 @@ part 'order_row_model.g.dart';
 
 @JsonSerializable()
 class OrderRowModel {
-  int? id;
+  static toNull(_) => null;
 
-  @JsonKey(name: "doc_id")
+  int id;
+
+  @JsonKey(name: "doc_id", toJson: toNull, includeIfNull: false)
   int? docId;
 
-  @JsonKey(name: "item_code")
+  @JsonKey(name: "item_code", toJson: toNull, includeIfNull: false)
   String? itemCode;
-  double? quantity;
 
-  @JsonKey(name: "qty_delivered")
+  @JsonKey(toJson: toNull, includeIfNull: false)
+  double quantity;
+
+  @JsonKey(name: "qty_delivered", toJson: toNull, includeIfNull: false)
   double? qtyDelivered;
+
+  @JsonKey(toJson: toNull, includeIfNull: false)
   String? uom;
 
-  @JsonKey(name: "unit_price")
-  double? unitPrice;
+  @JsonKey(name: "unit_price", toJson: toNull, includeIfNull: false)
+  double unitPrice;
 
   @JsonKey(name: "disc_amount")
   double? discAmount;
 
   double? discprcnt;
+
+  @JsonKey(toJson: toNull, includeIfNull: false)
   double? gross;
+
+  @JsonKey(toJson: toNull, includeIfNull: false)
   double? subtotal;
+  @JsonKey(toJson: toNull, includeIfNull: false)
   double? linestatus;
+
   String? comments;
 
-  @JsonKey(name: "updated_by")
+  @JsonKey(name: "updated_by", toJson: toNull, includeIfNull: false)
   int? updatedBy;
 
-  @JsonKey(name: "date_updated")
+  @JsonKey(name: "date_updated", toJson: toNull, includeIfNull: false)
   DateTime? dateUpdated;
 
   OrderRowModel(
-      {this.id,
+      {required this.id,
       this.docId,
       this.itemCode,
-      this.quantity,
+      required this.quantity,
+      required this.unitPrice,
       this.qtyDelivered,
       this.uom,
-      this.unitPrice,
       this.discAmount,
       this.discprcnt,
       this.gross,

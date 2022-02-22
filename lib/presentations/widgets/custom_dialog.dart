@@ -17,6 +17,34 @@ class CustomDialog {
     );
   }
 
+  static warning(
+    context, {
+    String? title,
+    String? message,
+    List<Widget>? actions,
+  }) {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return ContentDialog(
+          title: Wrap(children: [
+            const Icon(FluentIcons.warning),
+            Text(title ?? "Warning!")
+          ]),
+          content: Text(message ?? ""),
+          actions: actions ??
+              [
+                Button(
+                    child: const Text('Ok'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    })
+              ],
+        );
+      },
+    );
+  }
+
   static error(
     context, {
     String? title,
@@ -29,13 +57,16 @@ class CustomDialog {
       builder: (_) {
         return ContentDialog(
           title: Text(title ?? "Error Message"),
-          content: Text(message ?? "Something wrong, please check."),
+          content: Text(
+            message ?? "Something wrong, please check.",
+            overflow: TextOverflow.ellipsis,
+          ),
           actions: actions ??
               [
                 Button(
                     child: const Text('Ok'),
                     onPressed: () {
-                      Navigator.pop(context);
+                      Navigator.of(context).pop();
                     })
               ],
         );

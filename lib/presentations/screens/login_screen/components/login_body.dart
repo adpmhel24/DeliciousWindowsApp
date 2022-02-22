@@ -17,24 +17,24 @@ class LoginBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       color: const Color(0xFFDEF8E8),
-      child: material.ListView(
+      child: ListView(
         children: [
-          SizedBox(height: 50.r),
+          const SizedBox(height: 100),
           Align(
             alignment: Alignment.center,
             child: SizedBox(
-              width: 400.w,
-              height: 450.h,
+              width: 400,
+              height: 450,
               child: Acrylic(
                 luminosityAlpha: .1,
                 tintAlpha: 1,
                 child: Padding(
                   padding:
-                      EdgeInsets.symmetric(vertical: 10.w, horizontal: 20.h),
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 200.h,
+                        height: 200,
                         child: Image.asset(
                           'assets/images/logo.png',
                           fit: BoxFit.fitHeight,

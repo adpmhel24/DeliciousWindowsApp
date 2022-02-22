@@ -3,7 +3,7 @@ import 'package:json_annotation/json_annotation.dart';
 part 'whse_model.g.dart';
 
 @JsonSerializable()
-class WhseModel {
+class WarehouseModel {
   int id;
   String whsecode;
   String whsename;
@@ -11,7 +11,7 @@ class WhseModel {
   @JsonKey(name: "allowed_discount")
   double? allowedDiscount;
 
-  WhseModel({
+  WarehouseModel({
     required this.id,
     required this.whsecode,
     required this.whsename,
@@ -19,8 +19,8 @@ class WhseModel {
     this.allowedDiscount,
   });
 
-  factory WhseModel.fromJson(Map<String, dynamic> json) =>
-      _$WhseModelFromJson(json);
+  factory WarehouseModel.fromJson(Map<String, dynamic> json) =>
+      _$WarehouseModelFromJson(json);
 
-  Map<String, dynamic> toJson() => _$WhseModelToJson(this);
+  Map<String, dynamic> toJson() => _$WarehouseModelToJson(this);
 }

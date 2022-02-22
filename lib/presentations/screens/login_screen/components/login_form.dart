@@ -51,7 +51,7 @@ class _LoginFormState extends State<LoginForm> {
             Button(
                 child: const Text('Ok'),
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.of(context).pop();
                 })
           ]);
         }

@@ -46,20 +46,4 @@ class OrdersRepository {
       throw HttpException(e.message);
     }
   }
-
-  Future<void> fetchOrderById(int orderId) async {
-    Response response;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String token = json.decode(prefs.getString("userData")!)["token"];
-    try {
-      response = await _ordersAPI.getOrderByID(token: token, orderId: orderId);
-      if (response.statusCode == 200) {
-        _instance._order = OrderModel.fromJson(response.data['data']);
-      } else {
-        throw HttpException(response.data['message']);
-      }
-    } on HttpException catch (e) {
-      throw HttpException(e.message);
-    }
-  }
 }

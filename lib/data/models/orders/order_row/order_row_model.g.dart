@@ -8,13 +8,13 @@ part of 'order_row_model.dart';
 
 OrderRowModel _$OrderRowModelFromJson(Map<String, dynamic> json) =>
     OrderRowModel(
-      id: json['id'] as int?,
+      id: json['id'] as int,
       docId: json['doc_id'] as int?,
       itemCode: json['item_code'] as String?,
-      quantity: (json['quantity'] as num?)?.toDouble(),
+      quantity: (json['quantity'] as num).toDouble(),
+      unitPrice: (json['unit_price'] as num).toDouble(),
       qtyDelivered: (json['qty_delivered'] as num?)?.toDouble(),
       uom: json['uom'] as String?,
-      unitPrice: (json['unit_price'] as num?)?.toDouble(),
       discAmount: (json['disc_amount'] as num?)?.toDouble(),
       discprcnt: (json['discprcnt'] as num?)?.toDouble(),
       gross: (json['gross'] as num?)?.toDouble(),
@@ -27,21 +27,30 @@ OrderRowModel _$OrderRowModelFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['date_updated'] as String),
     );
 
-Map<String, dynamic> _$OrderRowModelToJson(OrderRowModel instance) =>
-    <String, dynamic>{
-      'id': instance.id,
-      'doc_id': instance.docId,
-      'item_code': instance.itemCode,
-      'quantity': instance.quantity,
-      'qty_delivered': instance.qtyDelivered,
-      'uom': instance.uom,
-      'unit_price': instance.unitPrice,
-      'disc_amount': instance.discAmount,
-      'discprcnt': instance.discprcnt,
-      'gross': instance.gross,
-      'subtotal': instance.subtotal,
-      'linestatus': instance.linestatus,
-      'comments': instance.comments,
-      'updated_by': instance.updatedBy,
-      'date_updated': instance.dateUpdated?.toIso8601String(),
-    };
+Map<String, dynamic> _$OrderRowModelToJson(OrderRowModel instance) {
+  final val = <String, dynamic>{
+    'id': instance.id,
+  };
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('doc_id', OrderRowModel.toNull(instance.docId));
+  writeNotNull('item_code', OrderRowModel.toNull(instance.itemCode));
+  writeNotNull('quantity', OrderRowModel.toNull(instance.quantity));
+  writeNotNull('qty_delivered', OrderRowModel.toNull(instance.qtyDelivered));
+  writeNotNull('uom', OrderRowModel.toNull(instance.uom));
+  writeNotNull('unit_price', OrderRowModel.toNull(instance.unitPrice));
+  val['disc_amount'] = instance.discAmount;
+  val['discprcnt'] = instance.discprcnt;
+  writeNotNull('gross', OrderRowModel.toNull(instance.gross));
+  writeNotNull('subtotal', OrderRowModel.toNull(instance.subtotal));
+  writeNotNull('linestatus', OrderRowModel.toNull(instance.linestatus));
+  val['comments'] = instance.comments;
+  writeNotNull('updated_by', OrderRowModel.toNull(instance.updatedBy));
+  writeNotNull('date_updated', OrderRowModel.toNull(instance.dateUpdated));
+  return val;
+}

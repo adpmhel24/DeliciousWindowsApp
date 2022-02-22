@@ -1,20 +1,20 @@
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../../../data/models/models.dart';
+import '../../../../../data/repositories/repositories.dart';
 import '../../../../utils/currency_formater.dart';
 
 class OrderRowsTable extends StatefulWidget {
-  const OrderRowsTable({Key? key, required this.orderRows}) : super(key: key);
-  final List<OrderRowModel> orderRows;
+  const OrderRowsTable({Key? key}) : super(key: key);
 
   @override
   State<OrderRowsTable> createState() => _OrderRowsTableState();
 }
 
 class _OrderRowsTableState extends State<OrderRowsTable> {
-  late OrderRowDetailsDataSource _dataSource;
   late DataGridController _dataGridController;
 
   late Map<String, double> columnWidths = {
@@ -32,19 +32,7 @@ class _OrderRowsTableState extends State<OrderRowsTable> {
   List<GridColumn> columnNames() {
     return [
       GridColumn(
-        width: columnWidths[OrderRowTableHeader.id]!,
-        columnName: OrderRowTableHeader.id,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderRowTableHeader.id,
-            style: TextStyle(fontWeight: FontWeight.bold),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ),
-      GridColumn(
+        allowEditing: false,
         width: columnWidths[OrderRowTableHeader.itemCode]!,
         columnName: OrderRowTableHeader.itemCode,
         label: Container(
@@ -58,6 +46,7 @@ class _OrderRowsTableState extends State<OrderRowsTable> {
         ),
       ),
       GridColumn(
+        allowEditing: false,
         width: columnWidths[OrderRowTableHeader.quantity]!,
         columnName: OrderRowTableHeader.quantity,
         label: Container(
@@ -71,6 +60,7 @@ class _OrderRowsTableState extends State<OrderRowsTable> {
         ),
       ),
       GridColumn(
+        allowEditing: false,
         width: columnWidths[OrderRowTableHeader.uom]!,
         columnName: OrderRowTableHeader.uom,
         label: Container(
@@ -84,6 +74,7 @@ class _OrderRowsTableState extends State<OrderRowsTable> {
         ),
       ),
       GridColumn(
+        allowEditing: false,
         width: columnWidths[OrderRowTableHeader.unitPrice]!,
         columnName: OrderRowTableHeader.unitPrice,
         label: Container(
@@ -91,19 +82,6 @@ class _OrderRowsTableState extends State<OrderRowsTable> {
           alignment: Alignment.center,
           child: const Text(
             OrderRowTableHeader.unitPrice,
-            style: TextStyle(fontWeight: FontWeight.bold),
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderRowTableHeader.discAmount]!,
-        columnName: OrderRowTableHeader.discAmount,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderRowTableHeader.discAmount,
             style: TextStyle(fontWeight: FontWeight.bold),
             overflow: TextOverflow.ellipsis,
           ),
@@ -123,6 +101,20 @@ class _OrderRowsTableState extends State<OrderRowsTable> {
         ),
       ),
       GridColumn(
+        width: columnWidths[OrderRowTableHeader.discAmount]!,
+        columnName: OrderRowTableHeader.discAmount,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderRowTableHeader.discAmount,
+            style: TextStyle(fontWeight: FontWeight.bold),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ),
+      GridColumn(
+        allowEditing: false,
         width: columnWidths[OrderRowTableHeader.subtotal]!,
         columnName: OrderRowTableHeader.subtotal,
         label: Container(
@@ -153,7 +145,8 @@ class _OrderRowsTableState extends State<OrderRowsTable> {
 
   @override
   void initState() {
-    _dataSource = OrderRowDetailsDataSource(widget.orderRows);
+    // _dataSource =
+
     _dataGridController = DataGridController();
 
     super.initState();
@@ -167,42 +160,45 @@ class _OrderRowsTableState extends State<OrderRowsTable> {
 
   @override
   Widget build(BuildContext context) {
+    OrderRowDetailsDataSource _dataSource =
+        OrderRowDetailsDataSource(Provider.of<OrderRepository>(context));
     return Container(
       margin: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-          border: Border.all(color: const Color.fromARGB(255, 71, 61, 61))),
-      child: SfDataGrid(
-        source: _dataSource,
-        allowEditing: true,
-        editingGestureType: EditingGestureType.tap,
-        selectionMode: SelectionMode.single,
-        navigationMode: GridNavigationMode.cell,
-        controller: _dataGridController,
-        frozenColumnsCount: 1,
-        allowColumnsResizing: true,
-        onColumnResizeUpdate: (ColumnResizeUpdateDetails details) {
-          setState(() {
-            columnWidths[details.column.columnName] = details.width;
-          });
-          return true;
-        },
-        isScrollbarAlwaysShown: true,
-        columns: columnNames(),
-        columnWidthMode: ColumnWidthMode.fill,
-        onQueryRowHeight: (details) {
-          return details.getIntrinsicRowHeight(details.rowIndex);
-        },
+      child: Acrylic(
+        luminosityAlpha: 10,
+        tintAlpha: 50,
+        child: SfDataGrid(
+          source: _dataSource,
+          allowEditing: true,
+          editingGestureType: EditingGestureType.doubleTap,
+          selectionMode: SelectionMode.single,
+          navigationMode: GridNavigationMode.cell,
+          controller: _dataGridController,
+          frozenColumnsCount: 1,
+          allowColumnsResizing: true,
+          onColumnResizeUpdate: (ColumnResizeUpdateDetails details) {
+            setState(() {
+              columnWidths[details.column.columnName] = details.width;
+            });
+            return true;
+          },
+          isScrollbarAlwaysShown: true,
+          columns: columnNames(),
+          columnWidthMode: ColumnWidthMode.fill,
+          onQueryRowHeight: (details) {
+            return details.getIntrinsicRowHeight(details.rowIndex);
+          },
+        ),
       ),
     );
   }
 }
 
 class OrderRowDetailsDataSource extends DataGridSource {
-  OrderRowDetailsDataSource(this._orders) {
-    dataGridRows = _orders
+  OrderRowDetailsDataSource(this._ordersRepo) {
+    dataGridRows = _ordersRepo.order.rows
         .map<DataGridRow>(
           (e) => DataGridRow(cells: [
-            DataGridCell<int>(columnName: OrderRowTableHeader.id, value: e.id),
             DataGridCell<String>(
                 columnName: OrderRowTableHeader.itemCode, value: e.itemCode),
             DataGridCell<double>(
@@ -216,14 +212,14 @@ class OrderRowDetailsDataSource extends DataGridSource {
               ),
             ),
             DataGridCell<String>(
+              columnName: OrderRowTableHeader.discprcnt,
+              value: e.discprcnt!.toStringAsFixed(2),
+            ),
+            DataGridCell<String>(
               columnName: OrderRowTableHeader.discAmount,
               value: formatStringToDecimal(
                 e.discAmount.toString(),
               ),
-            ),
-            DataGridCell<String>(
-              columnName: OrderRowTableHeader.discprcnt,
-              value: e.discprcnt!.toStringAsFixed(2),
             ),
             DataGridCell<String>(
               columnName: OrderRowTableHeader.subtotal,
@@ -239,7 +235,7 @@ class OrderRowDetailsDataSource extends DataGridSource {
         )
         .toList();
   }
-  final List<OrderRowModel> _orders;
+  final OrderRepository _ordersRepo;
 
   List<DataGridRow> dataGridRows = [];
 
@@ -259,12 +255,12 @@ class OrderRowDetailsDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
-        alignment: (dataGridCell.columnName == OrderRowTableHeader.id ||
-                dataGridCell.columnName == OrderRowTableHeader.itemCode ||
-                dataGridCell.columnName == OrderRowTableHeader.comments ||
-                dataGridCell.columnName == OrderRowTableHeader.uom)
+        alignment: (dataGridCell.columnName == OrderRowTableHeader.itemCode ||
+                dataGridCell.columnName == OrderRowTableHeader.comments)
             ? Alignment.centerLeft
-            : Alignment.centerRight,
+            : dataGridCell.columnName == OrderRowTableHeader.uom
+                ? Alignment.center
+                : Alignment.centerRight,
         padding: const EdgeInsets.all(16.0),
         child: Text(dataGridCell.value.toString()),
       );
@@ -287,74 +283,30 @@ class OrderRowDetailsDataSource extends DataGridSource {
       return;
     }
 
-    if (column.columnName == OrderRowTableHeader.id) {
-      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-          DataGridCell<int>(
-              columnName: OrderRowTableHeader.id, value: newCellValue);
-      _orders[dataRowIndex].id = newCellValue as int;
-    }
-    // Item Code
-    else if (column.columnName == OrderRowTableHeader.itemCode) {
-      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-          DataGridCell<String>(
-              columnName: OrderRowTableHeader.itemCode, value: newCellValue);
-      _orders[dataRowIndex].itemCode = newCellValue.toString();
-    }
-    // Quantity
-    else if (column.columnName == OrderRowTableHeader.quantity) {
-      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-          DataGridCell<double>(
-              columnName: OrderRowTableHeader.quantity, value: newCellValue);
-      _orders[dataRowIndex].quantity = newCellValue as double;
-    }
-    // UoM
-    else if (column.columnName == OrderRowTableHeader.uom) {
-      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-          DataGridCell<String>(
-              columnName: OrderRowTableHeader.uom, value: newCellValue);
-      _orders[dataRowIndex].uom = newCellValue as String;
-    }
-    // Unit Price
-    else if (column.columnName == OrderRowTableHeader.unitPrice) {
-      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-          DataGridCell<double>(
-              columnName: OrderRowTableHeader.unitPrice, value: newCellValue);
-      _orders[dataRowIndex].unitPrice = newCellValue as double;
-    }
-    // Discount Amount
-    else if (column.columnName == OrderRowTableHeader.discAmount) {
+    if (column.columnName == OrderRowTableHeader.discAmount) {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<double>(
               columnName: OrderRowTableHeader.discAmount, value: newCellValue);
-      _orders[dataRowIndex].discAmount = newCellValue as double;
+
+      _ordersRepo.updateDiscountAmount(dataRowIndex, newCellValue);
+
+      _ordersRepo.order.rows[dataRowIndex].discAmount = newCellValue as double;
     }
     // Discount Percentage
     else if (column.columnName == OrderRowTableHeader.discprcnt) {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<double>(
               columnName: OrderRowTableHeader.discprcnt, value: newCellValue);
-      _orders[dataRowIndex].discprcnt = newCellValue as double;
-    }
-    // Subtotal
-    else if (column.columnName == OrderRowTableHeader.subtotal) {
-      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-          DataGridCell<double>(
-              columnName: OrderRowTableHeader.subtotal, value: newCellValue);
-      _orders[dataRowIndex].subtotal = newCellValue as double;
-    }
-    // Subtotal
-    else if (column.columnName == OrderRowTableHeader.subtotal) {
-      dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
-          DataGridCell<double>(
-              columnName: OrderRowTableHeader.subtotal, value: newCellValue);
-      _orders[dataRowIndex].subtotal = newCellValue as double;
+
+      _ordersRepo.updateDiscountPercentage(dataRowIndex, newCellValue);
+      _ordersRepo.order.rows[dataRowIndex].discprcnt = newCellValue as double;
     }
     // Comments
     else if (column.columnName == OrderRowTableHeader.comments) {
       dataGridRows[dataRowIndex].getCells()[rowColumnIndex.columnIndex] =
           DataGridCell<String>(
               columnName: OrderRowTableHeader.comments, value: newCellValue);
-      _orders[dataRowIndex].comments = newCellValue as String;
+      _ordersRepo.order.rows[dataRowIndex].comments = newCellValue as String;
     }
   }
 
@@ -389,7 +341,6 @@ class OrderRowDetailsDataSource extends DataGridSource {
     final RegExp regExp = _getRegExp(isNumericType, column.columnName);
 
     return Container(
-      padding: const EdgeInsets.all(8.0),
       alignment: isNumericType ? Alignment.centerRight : Alignment.centerLeft,
       child: TextFormBox(
         autofocus: true,
@@ -403,7 +354,8 @@ class OrderRowDetailsDataSource extends DataGridSource {
         onChanged: (String value) {
           if (value.isNotEmpty) {
             if (isNumericType) {
-              newCellValue = double.parse(value);
+              newCellValue =
+                  double.parse(double.parse(value).toStringAsFixed(2));
             } else {
               newCellValue = value;
             }
@@ -421,6 +373,6 @@ class OrderRowDetailsDataSource extends DataGridSource {
   }
 
   RegExp _getRegExp(bool isNumericKeyBoard, String columnName) {
-    return isNumericKeyBoard ? RegExp('[0-9]') : RegExp('[a-zA-Z ]');
+    return isNumericKeyBoard ? RegExp("[0-9.]") : RegExp('.');
   }
 }

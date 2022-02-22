@@ -6,7 +6,8 @@ part of 'whse_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-WhseModel _$WhseModelFromJson(Map<String, dynamic> json) => WhseModel(
+WarehouseModel _$WarehouseModelFromJson(Map<String, dynamic> json) =>
+    WarehouseModel(
       id: json['id'] as int,
       whsecode: json['whsecode'] as String,
       whsename: json['whsename'] as String,
@@ -14,7 +15,8 @@ WhseModel _$WhseModelFromJson(Map<String, dynamic> json) => WhseModel(
       allowedDiscount: (json['allowed_discount'] as num?)?.toDouble(),
     );
 
-Map<String, dynamic> _$WhseModelToJson(WhseModel instance) => <String, dynamic>{
+Map<String, dynamic> _$WarehouseModelToJson(WarehouseModel instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'whsecode': instance.whsecode,
       'whsename': instance.whsename,

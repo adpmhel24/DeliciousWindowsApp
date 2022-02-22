@@ -9,6 +9,7 @@ class HomeScreen extends StatelessWidget {
       header: PageHeader(
         title: Text('Home'),
       ),
+      content: Center(child: Text("Under Development")),
     );
   }
 }

@@ -6,10 +6,27 @@ abstract class OrdersEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class FetchForConfirmationOrders extends OrdersEvent {}
+class FetchForConfirmationOrders extends OrdersEvent {
+  final DateTime? startDate;
+  final DateTime? endDate;
 
-class FetchForDispatchOrders extends OrdersEvent {}
+  const FetchForConfirmationOrders([this.startDate, this.endDate]);
+}
 
-class FetchCompletedOrders extends OrdersEvent {}
+class FetchForDispatchOrders extends OrdersEvent {
+  final DateTime? startDate;
+  final DateTime? endDate;
+  const FetchForDispatchOrders([this.startDate, this.endDate]);
+}
 
-class FetchCanceledOrders extends OrdersEvent {}
+class FetchCompletedOrders extends OrdersEvent {
+  final DateTime? startDate;
+  final DateTime? endDate;
+  const FetchCompletedOrders([this.startDate, this.endDate]);
+}
+
+class FetchCanceledOrders extends OrdersEvent {
+  final DateTime? startDate;
+  final DateTime? endDate;
+  const FetchCanceledOrders([this.startDate, this.endDate]);
+}
