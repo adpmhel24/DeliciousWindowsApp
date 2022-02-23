@@ -35,7 +35,7 @@ OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => OrderModel(
       ..salestype = json['salestype'] as String?
       ..disctype = json['disctype'] as String?
       ..paymentReference = json['payment_reference'] as String?
-      ..salesReference = json['salesReference'] as String?
+      ..salesReference = json['sales_reference'] as String?
       ..user = json['user'] as String?;
 
 Map<String, dynamic> _$OrderModelToJson(OrderModel instance) {
@@ -72,7 +72,7 @@ Map<String, dynamic> _$OrderModelToJson(OrderModel instance) {
   val['disctype'] = instance.disctype;
   val['payment_reference'] = instance.paymentReference;
   writeNotNull(
-      'salesReference', OrderHeaderModel.toNull(instance.salesReference));
+      'sales_reference', OrderHeaderModel.toNull(instance.salesReference));
   writeNotNull('user', OrderHeaderModel.toNull(instance.user));
   val['rows'] = OrderModel._orderRowToJson(instance.rows);
   return val;

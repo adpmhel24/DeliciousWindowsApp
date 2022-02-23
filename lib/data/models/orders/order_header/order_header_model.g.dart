@@ -30,7 +30,7 @@ OrderHeaderModel _$OrderHeaderModelFromJson(Map<String, dynamic> json) =>
       remarks: json['remarks'] as String?,
       address: json['address'] as String?,
       dispatchingWhse: json['dispatching_whse'] as String?,
-      salesReference: json['salesReference'] as String?,
+      salesReference: json['sales_reference'] as String?,
       user: json['user'] as String?,
     )
       ..paidAmount = (json['paid_amount'] as num?)?.toDouble()
@@ -72,7 +72,7 @@ Map<String, dynamic> _$OrderHeaderModelToJson(OrderHeaderModel instance) {
   val['disctype'] = instance.disctype;
   val['payment_reference'] = instance.paymentReference;
   writeNotNull(
-      'salesReference', OrderHeaderModel.toNull(instance.salesReference));
+      'sales_reference', OrderHeaderModel.toNull(instance.salesReference));
   writeNotNull('user', OrderHeaderModel.toNull(instance.user));
   return val;
 }

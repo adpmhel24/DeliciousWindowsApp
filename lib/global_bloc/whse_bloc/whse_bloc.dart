@@ -16,7 +16,7 @@ class WarehouseBloc extends Bloc<WarehouseEvent, WarehouseState> {
     emit(LoadingState());
     try {
       if (_warehouseRepository.whses.isEmpty) {
-        await _warehouseRepository.fetchWarehouses();
+        await _warehouseRepository.fetchWarehouses({"is_active": 1});
       }
       emit(WarehouseLoadedState(_warehouseRepository.whses));
     } on HttpException catch (e) {
@@ -28,7 +28,7 @@ class WarehouseBloc extends Bloc<WarehouseEvent, WarehouseState> {
       FetchWarehouseFromAPI event, Emitter<WarehouseState> emit) async {
     emit(LoadingState());
     try {
-      await _warehouseRepository.fetchWarehouses();
+      await _warehouseRepository.fetchWarehouses({"is_active": 1});
       emit(WarehouseLoadedState(_warehouseRepository.whses));
     } on HttpException catch (e) {
       emit(ErrorState(e.message));

@@ -17,7 +17,7 @@ class AppRepo {
   Future<void> init() async {
     await salesTypeRepository.fetchFromAPI();
     await discTypeRepository.fetchDiscType();
-    await whseRepository.fetchWarehouses();
+    await whseRepository.fetchWarehouses({"is_active": 1});
     // await productsRepository.fetchProducts();
     // await customerRepository.fetchCustomerFromAPI();
     // await customerTypeRepository.fetchCustomerType();

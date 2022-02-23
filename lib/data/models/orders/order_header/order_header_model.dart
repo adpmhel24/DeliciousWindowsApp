@@ -66,8 +66,7 @@ class OrderHeaderModel {
   @JsonKey(name: 'payment_reference')
   String? paymentReference;
 
-  @JsonKey(toJson: toNull, includeIfNull: false)
-  @JsonKey(name: 'sales_reference')
+  @JsonKey(name: 'sales_reference', toJson: toNull, includeIfNull: false)
   String? salesReference;
 
   @JsonKey(toJson: toNull, includeIfNull: false)

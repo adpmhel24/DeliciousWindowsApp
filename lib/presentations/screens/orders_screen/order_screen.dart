@@ -1,3 +1,6 @@
+import 'package:badges/badges.dart';
+import 'package:delicious_windows_app/data/repositories/app_repo.dart';
+import 'package:delicious_windows_app/data/repositories/orders_repo.dart';
 import 'package:delicious_windows_app/presentations/screens/orders_screen/orders_bloc/blocs.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,8 +28,16 @@ class _OrderScreenState extends State<OrderScreen> {
 
   int currentIndex = 0;
 
+  final List<String> _appBarTitles = [
+    "For Confirmation",
+    "For Dispatch",
+    "Delivered",
+    "Canceled"
+  ];
+
   @override
   Widget build(BuildContext context) {
+    OrdersRepository _orderRepo = AppRepo.ordersReposistory;
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => OrdersBloc()),
@@ -35,7 +46,7 @@ class _OrderScreenState extends State<OrderScreen> {
       child: Builder(builder: (context) {
         return ScaffoldPage(
           header: PageHeader(
-            title: const Text('Orders'),
+            title: Text(_appBarTitles[currentIndex]),
             commandBar: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -72,7 +83,7 @@ class _OrderScreenState extends State<OrderScreen> {
                           } else if (currentIndex == 1) {
                             context.read<OrdersBloc>().add(
                                 FetchForDispatchOrders(startDate, endDate));
-                          } else if (currentIndex == 1) {
+                          } else if (currentIndex == 2) {
                             context
                                 .read<OrdersBloc>()
                                 .add(FetchCompletedOrders(startDate, endDate));
@@ -104,22 +115,63 @@ class _OrderScreenState extends State<OrderScreen> {
             currentIndex: currentIndex,
             closeButtonVisibility: CloseButtonVisibilityMode.never,
             onChanged: (index) => setState(() => currentIndex = index),
-            tabs: const [
+            tabs: [
               Tab(
-                icon: Icon(FluentIcons.add_to_shopping_list),
-                text: Text('For Confirmation'),
+                icon: const Icon(FluentIcons.add_to_shopping_list),
+                text: BlocBuilder<OrdersBloc, OrdersState>(
+                  buildWhen: (previous, current) => current is OrdersLoaded,
+                  builder: (context, state) {
+                    return Badge(
+                      badgeColor: Colors.teal.light,
+                      stackFit: StackFit.expand,
+                      badgeContent: Text(
+                        "${_orderRepo.forConfirmationCount}",
+                        style: const TextStyle(
+                            fontSize: 11.0, color: Colors.white),
+                      ),
+                      child: const Text(
+                        'For Confirmation',
+                        style: TextStyle(fontSize: 15.0),
+                      ),
+                      position: BadgePosition.topEnd(top: -4, end: 2),
+                    );
+                  },
+                ),
               ),
               Tab(
-                icon: Icon(FluentIcons.delivery_truck),
-                text: Text('For Dispatch'),
+                icon: const Icon(FluentIcons.delivery_truck),
+                text: BlocBuilder<OrdersBloc, OrdersState>(
+                  buildWhen: (previous, current) => current is OrdersLoaded,
+                  builder: (context, state) {
+                    return Badge(
+                      badgeColor: Colors.teal.light,
+                      badgeContent: Text(
+                        "${_orderRepo.forDispatchCount}",
+                        style: const TextStyle(
+                            fontSize: 11.0, color: Colors.white),
+                      ),
+                      child: const Text(
+                        'For Dispatch',
+                        style: TextStyle(fontSize: 15.0),
+                      ),
+                      position: BadgePosition.topEnd(top: -4, end: 2),
+                    );
+                  },
+                ),
               ),
-              Tab(
+              const Tab(
                 icon: Icon(FluentIcons.completed),
-                text: Text('Completed'),
+                text: Text(
+                  'Completed',
+                  style: TextStyle(fontSize: 15.0),
+                ),
               ),
-              Tab(
+              const Tab(
                 icon: Icon(FluentIcons.warning),
-                text: Text('Canceled'),
+                text: Text(
+                  'Canceled',
+                  style: TextStyle(fontSize: 15.0),
+                ),
               ),
             ],
             bodies: [

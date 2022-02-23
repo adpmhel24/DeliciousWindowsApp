@@ -14,9 +14,13 @@ class OrdersRepository {
 
   List<OrderHeaderModel> _orders = [];
   List<OrderHeaderModel> get orders => [..._orders];
-
   late OrderModel _order;
+  int _forConfirmationCount = 0;
+  int _forDispatchCount = 0;
+
   OrderModel get order => _order;
+  int get forConfirmationCount => _forConfirmationCount;
+  int get forDispatchCount => _forDispatchCount;
 
   ///Singleton factory
   static final OrdersRepository _instance = OrdersRepository._internal();
@@ -39,6 +43,9 @@ class OrdersRepository {
             (i) => OrderHeaderModel.fromJson(i),
           ),
         );
+        _instance._forConfirmationCount =
+            response.data['count']['for_confirmation'];
+        _instance._forDispatchCount = response.data['count']['for_dispatch'];
       } else {
         throw HttpException(response.data['message']);
       }

@@ -1,16 +1,14 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'dio_settings.dart';
 
 class DiscountTypeAPI {
-  // Dio dio = DioSettings().dio;
+  Dio dio = DioSettings.dio();
 
   Future<Response> getAllDiscType({required String token}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Dio dio = DioSettings(prefs.getString("url")).dio();
+    Dio dio = DioSettings.dio();
     Response response;
     try {
       response = await dio.get(
@@ -21,7 +19,12 @@ class DiscountTypeAPI {
       );
     } on DioError catch (e) {
       if (e.response != null) {
-        throw HttpException(e.response!.data['message']);
+        if (e.response!.data.runtimeType != String) {
+          throw HttpException(e.response!.data['message']);
+        } else {
+          throw HttpException(
+              "Error Code ${e.response!.statusCode}: ${e.response!.statusMessage}");
+        }
       } else if (e.type == DioErrorType.connectTimeout) {
         throw const HttpException("Connection timed out");
       } else {

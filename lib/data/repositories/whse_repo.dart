@@ -13,12 +13,12 @@ class WarehouseRepo {
 
   List<WarehouseModel> get whses => [..._whses];
 
-  Future<void> fetchWarehouses() async {
+  Future<void> fetchWarehouses([Map<String, dynamic>? params]) async {
     Response response;
 
     try {
       response = await _warehouseAPI.getAllWarehouse(
-          token: _authRepository.currentUser.token);
+          token: _authRepository.currentUser.token, params: params);
       if (response.statusCode == 200) {
         _whses = List<WarehouseModel>.from(
             response.data['data'].map((i) => WarehouseModel.fromJson(i)));

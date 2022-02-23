@@ -146,6 +146,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   hasCurrency: true),
                             ),
                           ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
                           InfoLabelRow(
                             label: "Delivery Fee:",
                             child: Text(
@@ -154,6 +157,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 hasCurrency: true,
                               ),
                             ),
+                          ),
+                          SizedBox(
+                            height: 10.h,
                           ),
                           InfoLabelRow(
                             label: "Other Fee:",
@@ -164,6 +170,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                               ),
                             ),
                           ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
                           InfoLabelRow(
                             label: "Doctotal",
                             child: Text(
@@ -172,6 +181,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 hasCurrency: true,
                               ),
                             ),
+                          ),
+                          SizedBox(
+                            height: 10.h,
                           ),
                           InfoLabelRow(
                             label: "Balance",
@@ -492,6 +504,15 @@ class _OrderDetailsState extends State<OrderDetails> {
             label: "Delivery Address:",
             child: Text(
               orderRepo.order.address ?? "",
+            ),
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          InfoLabelRow(
+            label: "Payment Method:",
+            child: Text(
+              orderRepo.order.paymentMethod ?? "",
             ),
           ),
         ],

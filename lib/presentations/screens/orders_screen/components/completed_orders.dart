@@ -385,7 +385,8 @@ class OrdersDataSource extends DataGridSource {
               DataGridCell<String>(
                   columnName: OrderTableHeader.user, value: e.user),
               DataGridCell<String>(
-                  columnName: OrderTableHeader.user, value: e.salesReference),
+                  columnName: OrderTableHeader.salesReference,
+                  value: e.salesReference),
             ]))
         .toList();
   }

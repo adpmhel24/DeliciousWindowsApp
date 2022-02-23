@@ -32,9 +32,8 @@ class OrderBloc extends Bloc<OrderEvent, OrderState> {
     emit(SalesSubmitting());
     try {
       await orderRepo.updateOrderById(
-          orderId: event.data['header']['base_id'],
-          data: {"paid_amount": event.paidAmount ?? 0});
-      String message = await salesRepo.createSales(event.data);
+          orderId: event.salesData['header']['base_id'], data: event.orderData);
+      String message = await salesRepo.createSales(event.salesData);
       emit(SalesCreated(message));
     } on HttpException catch (e) {
       emit(CreatingSalesError(e.message));

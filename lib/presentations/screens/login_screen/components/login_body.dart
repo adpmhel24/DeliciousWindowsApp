@@ -19,12 +19,12 @@ class LoginBody extends StatelessWidget {
       color: const Color(0xFFDEF8E8),
       child: ListView(
         children: [
-          const SizedBox(height: 100),
+          SizedBox(height: 100.h),
           Align(
             alignment: Alignment.center,
             child: SizedBox(
-              width: 400,
-              height: 450,
+              width: 400.0,
+              height: 550.0,
               child: Acrylic(
                 luminosityAlpha: .1,
                 tintAlpha: 1,
@@ -48,6 +48,11 @@ class LoginBody extends StatelessWidget {
                         width: double.infinity,
                         height: 30.h,
                         child: material.ElevatedButton(
+                          style: material.ButtonStyle(
+                            backgroundColor:
+                                material.MaterialStateProperty.all<Color>(
+                                    const Color.fromARGB(255, 247, 209, 74)),
+                          ),
                           onPressed: context
                                   .watch<LoginFormBloc>()
                                   .state
@@ -66,6 +71,7 @@ class LoginBody extends StatelessWidget {
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 1,
+                                color: Colors.red,
                                 fontFamily:
                                     GoogleFonts.merriweather().fontFamily,
                               ),

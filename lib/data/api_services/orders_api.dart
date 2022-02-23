@@ -1,16 +1,15 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'dio_settings.dart';
 
 class OrdersAPI {
+  final Dio dio = DioSettings.dio();
+
   Future<Response> getAllOrders(
       {required String token, Map<String, dynamic>? params}) async {
     Response response;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Dio dio = DioSettings(prefs.getString("url")).dio();
     try {
       response = await dio.get('/api/ordering/all',
           queryParameters: params,
@@ -19,7 +18,12 @@ class OrdersAPI {
           }));
     } on DioError catch (e) {
       if (e.response != null) {
-        throw HttpException(e.response!.data['message']);
+        if (e.response!.data.runtimeType != String) {
+          throw HttpException(e.response!.data['message']);
+        } else {
+          throw HttpException(
+              "Error Code ${e.response!.statusCode}: ${e.response!.statusMessage}");
+        }
       } else if (e.type == DioErrorType.connectTimeout) {
         throw const HttpException("Connection timed out");
       } else {
@@ -32,8 +36,6 @@ class OrdersAPI {
   Future<Response> getOrderByID(
       {required String token, required int orderId}) async {
     Response response;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Dio dio = DioSettings(prefs.getString("url")).dio();
     try {
       response = await dio.get('/api/ordering/get_by_id/$orderId',
           options: Options(headers: {
@@ -41,7 +43,12 @@ class OrdersAPI {
           }));
     } on DioError catch (e) {
       if (e.response != null) {
-        throw HttpException(e.response!.data['message']);
+        if (e.response!.data.runtimeType != String) {
+          throw HttpException(e.response!.data['message']);
+        } else {
+          throw HttpException(
+              "Error Code ${e.response!.statusCode}: ${e.response!.statusMessage}");
+        }
       } else if (e.type == DioErrorType.connectTimeout) {
         throw const HttpException("Connection timed out");
       } else {
@@ -54,8 +61,6 @@ class OrdersAPI {
   Future<Response> updateOrderById(int orderId,
       {required String token, required Map<String, dynamic> data}) async {
     Response response;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Dio dio = DioSettings(prefs.getString("url")).dio();
 
     try {
       response = await dio.put('/api/ordering/update/$orderId',
@@ -71,7 +76,12 @@ class OrdersAPI {
           data: data);
     } on DioError catch (e) {
       if (e.response != null) {
-        throw HttpException(e.response!.data['message']);
+        if (e.response!.data.runtimeType != String) {
+          throw HttpException(e.response!.data['message']);
+        } else {
+          throw HttpException(
+              "Error Code ${e.response!.statusCode}: ${e.response!.statusMessage}");
+        }
       } else if (e.type == DioErrorType.connectTimeout) {
         throw const HttpException("Connection timed out");
       } else {
@@ -84,8 +94,6 @@ class OrdersAPI {
   Future<Response> cancelOrder(int orderId,
       {required String token, required Map<String, dynamic> data}) async {
     Response response;
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    Dio dio = DioSettings(prefs.getString("url")).dio();
 
     try {
       response = await dio.put('/api/ordering/cancel/$orderId',
@@ -101,7 +109,12 @@ class OrdersAPI {
           data: data);
     } on DioError catch (e) {
       if (e.response != null) {
-        throw HttpException(e.response!.data['message']);
+        if (e.response!.data.runtimeType != String) {
+          throw HttpException(e.response!.data['message']);
+        } else {
+          throw HttpException(
+              "Error Code ${e.response!.statusCode}: ${e.response!.statusMessage}");
+        }
       } else if (e.type == DioErrorType.connectTimeout) {
         throw const HttpException("Connection timed out");
       } else {

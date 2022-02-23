@@ -22,6 +22,7 @@ class _OrderRowTablReadOnlyState extends State<OrderRowTablReadOnly> {
     OrderRowTableHeader.quantity: double.nan,
     OrderRowTableHeader.uom: double.nan,
     OrderRowTableHeader.unitPrice: double.nan,
+    OrderRowTableHeader.gross: double.nan,
     OrderRowTableHeader.discAmount: double.nan,
     OrderRowTableHeader.discprcnt: double.nan,
     OrderRowTableHeader.subtotal: double.nan,
@@ -77,6 +78,19 @@ class _OrderRowTablReadOnlyState extends State<OrderRowTablReadOnly> {
           alignment: Alignment.center,
           child: const Text(
             OrderRowTableHeader.unitPrice,
+            style: TextStyle(fontWeight: FontWeight.bold),
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ),
+      GridColumn(
+        width: columnWidths[OrderRowTableHeader.gross]!,
+        columnName: OrderRowTableHeader.gross,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderRowTableHeader.gross,
             style: TextStyle(fontWeight: FontWeight.bold),
             overflow: TextOverflow.ellipsis,
           ),
@@ -201,6 +215,12 @@ class OrderRowDetailsDataSource extends DataGridSource {
               columnName: OrderRowTableHeader.unitPrice,
               value: formatStringToDecimal(
                 e.unitPrice.toString(),
+              ),
+            ),
+            DataGridCell<String>(
+              columnName: OrderRowTableHeader.gross,
+              value: formatStringToDecimal(
+                e.gross.toString(),
               ),
             ),
             DataGridCell<String>(

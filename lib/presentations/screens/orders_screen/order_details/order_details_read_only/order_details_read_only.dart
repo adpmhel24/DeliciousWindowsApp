@@ -132,6 +132,9 @@ class _OrderDetailsReadOnlyState extends State<OrderDetailsReadOnly> {
                                   hasCurrency: true),
                             ),
                           ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
                           InfoLabelRow(
                             label: "Delivery Fee:",
                             child: Text(
@@ -140,6 +143,9 @@ class _OrderDetailsReadOnlyState extends State<OrderDetailsReadOnly> {
                                 hasCurrency: true,
                               ),
                             ),
+                          ),
+                          SizedBox(
+                            height: 10.h,
                           ),
                           InfoLabelRow(
                             label: "Other Fee:",
@@ -150,6 +156,9 @@ class _OrderDetailsReadOnlyState extends State<OrderDetailsReadOnly> {
                               ),
                             ),
                           ),
+                          SizedBox(
+                            height: 10.h,
+                          ),
                           InfoLabelRow(
                             label: "Doctotal",
                             child: Text(
@@ -158,6 +167,9 @@ class _OrderDetailsReadOnlyState extends State<OrderDetailsReadOnly> {
                                 hasCurrency: true,
                               ),
                             ),
+                          ),
+                          SizedBox(
+                            height: 10.h,
                           ),
                           InfoLabelRow(
                             label: "Balance",
@@ -251,16 +263,23 @@ class _OrderDetailsReadOnlyState extends State<OrderDetailsReadOnly> {
                                                     Navigator.of(context).pop();
                                                   }),
                                               Button(
-                                                  child: const Text('Proceed'),
-                                                  onPressed: () {
-                                                    widget.orderBloc.add(
-                                                        SubmitCreateSales(
-                                                            widget.orderModel
-                                                                .toJsonSales(),
-                                                            widget.orderModel
-                                                                .paidAmount));
-                                                    Navigator.of(context).pop();
-                                                  }),
+                                                child: const Text('Proceed'),
+                                                onPressed: () {
+                                                  widget.orderBloc.add(
+                                                      SubmitCreateSales(
+                                                          salesData: widget
+                                                              .orderModel
+                                                              .toJsonSales(),
+                                                          orderData: {
+                                                        "remarks": widget
+                                                            .orderModel.remarks,
+                                                        "paid_amount": widget
+                                                            .orderModel
+                                                            .paidAmount
+                                                      }));
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
                                             ]);
                                       }),
                                 );
@@ -312,10 +331,12 @@ class _OrderDetailsReadOnlyState extends State<OrderDetailsReadOnly> {
           children: [
             InfoLabelRow(
               label: "Dispatching Whse:",
-              child: Text(_warehouses
-                  .firstWhere(
-                      (e) => e.whsecode == widget.orderModel.dispatchingWhse)
-                  .whsename),
+              child: Text(widget.orderModel.dispatchingWhse == null
+                  ? ""
+                  : _warehouses
+                      .firstWhere((e) =>
+                          e.whsecode == widget.orderModel.dispatchingWhse)
+                      .whsename),
             ),
             SizedBox(
               height: 10.h,
@@ -426,6 +447,15 @@ class _OrderDetailsReadOnlyState extends State<OrderDetailsReadOnly> {
             label: "Delivery Address:",
             child: Text(
               widget.orderModel.address ?? "",
+            ),
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          InfoLabelRow(
+            label: "Payment Method:",
+            child: Text(
+              widget.orderModel.paymentMethod ?? "",
             ),
           ),
         ],

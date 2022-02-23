@@ -18,11 +18,11 @@ class SubmitUpdateOrder extends OrderEvent {
 }
 
 class SubmitCreateSales extends OrderEvent {
-  final double? paidAmount;
-  final Map<String, dynamic> data;
-  const SubmitCreateSales(this.data, this.paidAmount);
+  final Map<String, dynamic> orderData;
+  final Map<String, dynamic> salesData;
+  const SubmitCreateSales({required this.salesData, required this.orderData});
   @override
-  List<Object> get props => [data];
+  List<Object> get props => [salesData, orderData];
 }
 
 class SubmitCancelOrder extends OrderEvent {

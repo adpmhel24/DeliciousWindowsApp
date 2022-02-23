@@ -29,7 +29,7 @@ class OrderModel extends OrderHeaderModel {
 
     data["header"]["base_id"] = id;
     data["header"]["transdate"] =
-        DateFormat('yyyy/MM/dd hh:mm:ss').format(DateTime.now()).toString();
+        DateFormat('yyyy/MM/dd hh:mm').format(DateTime.now()).toString();
     data["header"]["transtype"] = salestype;
     data["header"]["disctype"] = disctype;
     data["header"]["cust_code"] = custCode;
@@ -39,8 +39,7 @@ class OrderModel extends OrderHeaderModel {
     data["header"]["dispatching_whse"] = dispatchingWhse;
     data["header"]["hashed_id"] =
         const Uuid().v5(Uuid.NAMESPACE_URL, DateTime.now().toIso8601String());
-    data["header"]["remarks"] =
-        "$remarks${remarks ?? ''} Based on Order Id: $id";
+    data["header"]["remarks"] = "${remarks ?? ''} Based on Order Id: $id";
     data["header"]["tenderamt"] = 0.00;
     data["rows"] = rows.map((e) {
       return {
