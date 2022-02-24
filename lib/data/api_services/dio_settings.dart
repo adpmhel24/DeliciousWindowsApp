@@ -8,7 +8,7 @@ class DioSettings {
     String url;
 
     if (kReleaseMode) {
-      url = "http://122.54.198.84:84";
+      url = "http://122.54.198.84:82";
     } else {
       url = "http://122.54.198.84:82";
     }

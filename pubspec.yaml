@@ -80,7 +80,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
-  msix: ^3.2.0
+  msix: 3.1.0
 
 msix_config:
   display_name: Delicious Order Monitoring App
@@ -89,8 +89,10 @@ msix_config:
   msix_version: 1.0.0.0
   logo_path: assets/images/logo.png
   capabilities: internetClient
-  certificate_path: C:\Users\mhell24\Documents\CERTIFICATE.pfx
-  certificate_password: Rc#10011992
+  install_certificate: false
+  # certificate_path: C:\Users\mhell24\Documents\CERTIFICATE.pfx
+  # certificate_password: Rc#10011992
+
 
 
 
