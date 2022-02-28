@@ -8,8 +8,10 @@ class DioSettings {
     String url;
 
     if (kReleaseMode) {
-      url = "http://122.54.198.84:82";
+      // release mode
+      url = "http://122.54.198.84:84";
     } else {
+      // debug mode
       url = "http://122.54.198.84:82";
     }
     return Dio(
