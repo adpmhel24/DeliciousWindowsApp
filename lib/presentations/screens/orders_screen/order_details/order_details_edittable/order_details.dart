@@ -17,17 +17,15 @@ import '../order_bloc/bloc.dart';
 import 'order_rows.dart';
 
 class OrderDetails extends StatefulWidget {
-  const OrderDetails(
-      {Key? key,
-      required this.orderRepo,
-      required this.fetchOrders,
-      required this.orderBloc,
-      this.isEdittable})
-      : super(key: key);
+  const OrderDetails({
+    Key? key,
+    required this.orderRepo,
+    required this.fetchOrders,
+    required this.orderBloc,
+  }) : super(key: key);
   final OrderRepository orderRepo;
   final Function fetchOrders;
   final OrderBloc orderBloc;
-  final bool? isEdittable;
 
   @override
   State<OrderDetails> createState() => _OrderDetailsState();
@@ -68,7 +66,10 @@ class _OrderDetailsState extends State<OrderDetails> {
 
     // Add to OrderState
     if (widget.orderRepo.order.orderStatus == "For Confirmation") {
-      _orderStatus = ["For Confirmation", "Confirmed"];
+      _orderStatus = [
+        "For Confirmation",
+        "Confirmed",
+      ];
     } else {
       _orderStatus = ["Dispatched"];
     }
@@ -101,7 +102,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     headerLeft(widget.orderRepo),
-                    headerRight(widget.isEdittable ?? true),
+                    headerRight(true),
                   ],
                 ),
               ),
@@ -347,6 +348,24 @@ class _OrderDetailsState extends State<OrderDetails> {
               label: "Discount Type:",
               child: isEdittable
                   ? Combobox<String>(
+                      icon: Row(
+                        children: [
+                          const Icon(FluentIcons.chevron_down),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Button(
+                            child: const Icon(FluentIcons.clear),
+                            onPressed: () {
+                              setState(() {
+                                _discTypeSelected = null;
+                              });
+                              widget.orderRepo.updateHeader(
+                                  {"disctype": _discTypeSelected});
+                            },
+                          ),
+                        ],
+                      ),
                       placeholder: const Text('Select Discount Type'),
                       items: _discountTypes
                           .map(

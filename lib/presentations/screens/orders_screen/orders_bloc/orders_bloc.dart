@@ -22,7 +22,8 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
       await _ordersRepository.fetchOrders(params: {
         "order_status": 0,
         "from_date": DateFormat('MM/dd/yyy')
-            .format(event.startDate ?? DateTime.now())
+            .format(event.startDate ??
+                DateTime.now().subtract(const Duration(days: 60)))
             .toString(),
         "to_date": DateFormat('MM/dd/yyy')
             .format(
@@ -43,7 +44,8 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
       await _ordersRepository.fetchOrders(params: {
         "order_status": 1,
         "from_date": DateFormat('MM/dd/yyy')
-            .format(event.startDate ?? DateTime.now())
+            .format(event.startDate ??
+                DateTime.now().subtract(const Duration(days: 60)))
             .toString(),
         "to_date": DateFormat('MM/dd/yyy')
             .format(

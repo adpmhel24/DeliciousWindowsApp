@@ -404,7 +404,6 @@ class _ForConfirmationState extends State<ForConfirmation> {
                                                   .refresh(false),
                                               orderBloc:
                                                   context.read<OrderBloc>(),
-                                              isEdittable: true,
                                             );
                                           });
 
