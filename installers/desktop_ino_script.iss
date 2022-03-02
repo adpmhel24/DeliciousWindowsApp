@@ -3,7 +3,7 @@
 ; Build Windows Application first before run this command
 
 #define MyAppName "Delicious Ordering App"
-#define MyAppVersion "1.1"
+#define MyAppVersion "1.0"
 #define MyAppPublisher "JPSC.dev"
 #define MyAppExeName "delicious_windows_app.exe"
 

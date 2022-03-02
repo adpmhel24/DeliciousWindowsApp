@@ -23,15 +23,15 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen> {
   final GlobalKey<SfDataGridState> gridKey = GlobalKey<SfDataGridState>();
 
-  DateTime startDate = DateTime.now().subtract(const Duration(days: 60));
-  DateTime endDate = DateTime.now().add(const Duration(days: 7));
+  DateTime startDate = DateTime.now().subtract(const Duration(days: 14));
+  DateTime endDate = DateTime.now().add(const Duration(days: 30));
 
   int currentIndex = 0;
 
   final List<String> _appBarTitles = [
     "For Confirmation",
     "For Dispatch",
-    "Delivered",
+    "Completed",
     "Canceled"
   ];
 
@@ -101,12 +101,12 @@ class _OrderScreenState extends State<OrderScreen> {
                 Button(
                   child: const Icon(FluentIcons.refresh),
                   onPressed: () {
-                    gridKey.currentState!.refresh(false);
                     setState(() {
                       startDate =
-                          DateTime.now().subtract(const Duration(days: 60));
-                      endDate = DateTime.now().add(const Duration(days: 7));
+                          DateTime.now().subtract(const Duration(days: 14));
+                      endDate = DateTime.now().add(const Duration(days: 30));
                     });
+                    gridKey.currentState!.refresh(false);
                   },
                 ),
               ],

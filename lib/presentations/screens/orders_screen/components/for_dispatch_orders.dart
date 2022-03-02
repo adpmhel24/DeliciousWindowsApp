@@ -221,7 +221,10 @@ class _ForDispatchState extends State<ForDispatch> {
         },
         builder: (_, state) {
           if (state is OrdersLoaded) {
-            _ordersDataSource = OrdersDataSource(context, orders: state.orders);
+            _ordersDataSource = OrdersDataSource(context,
+                orders: state.orders,
+                startDate: widget.startDate,
+                endDate: widget.endDate);
 
             return BlocListener<OrderBloc, OrderState>(
               listenWhen: (previous, current) =>
@@ -260,6 +263,8 @@ class _ForDispatchState extends State<ForDispatch> {
               child: SfDataGrid(
                 key: widget.gridKey,
                 source: _ordersDataSource,
+                allowSorting: true,
+                allowMultiColumnSorting: true,
                 selectionMode: SelectionMode.single,
                 navigationMode: GridNavigationMode.cell,
                 frozenColumnsCount: 1,
@@ -301,8 +306,15 @@ class _ForDispatchState extends State<ForDispatch> {
 
 class OrdersDataSource extends DataGridSource {
   late BuildContext _ordersContext;
+  final DateTime? startDate;
+  final DateTime? endDate;
 
-  OrdersDataSource(ordersContext, {required List<OrderHeaderModel> orders}) {
+  OrdersDataSource(
+    ordersContext, {
+    required List<OrderHeaderModel> orders,
+    this.startDate,
+    this.endDate,
+  }) {
     _ordersContext = ordersContext;
     dataGridRows = orders
         .map<DataGridRow>((e) => DataGridRow(cells: [
@@ -345,7 +357,9 @@ class OrdersDataSource extends DataGridSource {
   @override
   Future<void> handleRefresh() async {
     await Future.delayed(const Duration(milliseconds: 200));
-    _ordersContext.read<OrdersBloc>().add(const FetchForDispatchOrders());
+    _ordersContext
+        .read<OrdersBloc>()
+        .add(FetchForDispatchOrders(startDate, endDate));
   }
 
   @override

@@ -24,7 +24,7 @@ class OrderDetails extends StatefulWidget {
     required this.orderBloc,
   }) : super(key: key);
   final OrderRepository orderRepo;
-  final Function fetchOrders;
+  final Function() fetchOrders;
   final OrderBloc orderBloc;
 
   @override

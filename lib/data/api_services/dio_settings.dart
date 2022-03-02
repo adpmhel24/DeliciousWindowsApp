@@ -9,7 +9,7 @@ class DioSettings {
 
     if (kReleaseMode) {
       // release mode
-      url = "http://122.54.198.84:82";
+      url = "http://122.54.198.84:84";
     } else {
       // debug mode
       url = "http://122.54.198.84:82";

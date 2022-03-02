@@ -98,6 +98,18 @@ class _CompletedOrdersState extends State<CompletedOrders> {
         ),
       ),
       GridColumn(
+        width: columnWidths[OrderTableHeader.salesReference]!,
+        columnName: OrderTableHeader.salesReference,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderTableHeader.salesReference,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      GridColumn(
         width: columnWidths[OrderTableHeader.custCode]!,
         columnName: OrderTableHeader.custCode,
         label: Container(
@@ -229,18 +241,6 @@ class _CompletedOrdersState extends State<CompletedOrders> {
           ),
         ),
       ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.salesReference]!,
-        columnName: OrderTableHeader.salesReference,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.salesReference,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
     ];
   }
 
@@ -299,6 +299,8 @@ class _CompletedOrdersState extends State<CompletedOrders> {
               child: SfDataGrid(
                 key: widget.gridKey,
                 source: _ordersDataSource,
+                allowSorting: true,
+                allowMultiColumnSorting: true,
                 selectionMode: SelectionMode.single,
                 navigationMode: GridNavigationMode.cell,
                 frozenColumnsCount: 1,
@@ -353,6 +355,9 @@ class OrdersDataSource extends DataGridSource {
                   columnName: OrderTableHeader.deliveryDate,
                   value: DateFormat("MM/dd/yyyy").format(e.deliveryDate!)),
               DataGridCell<String>(
+                  columnName: OrderTableHeader.salesReference,
+                  value: e.salesReference),
+              DataGridCell<String>(
                   columnName: OrderTableHeader.custCode, value: e.custCode),
               DataGridCell<String>(
                   columnName: OrderTableHeader.details, value: e.details),
@@ -384,9 +389,6 @@ class OrdersDataSource extends DataGridSource {
                   columnName: OrderTableHeader.address, value: e.address),
               DataGridCell<String>(
                   columnName: OrderTableHeader.user, value: e.user),
-              DataGridCell<String>(
-                  columnName: OrderTableHeader.salesReference,
-                  value: e.salesReference),
             ]))
         .toList();
   }

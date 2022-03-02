@@ -293,6 +293,8 @@ class _CanceledOrdersState extends State<CanceledOrders> {
               return SfDataGrid(
                 key: widget.gridKey,
                 source: _ordersDataSource,
+                allowSorting: true,
+                allowMultiColumnSorting: true,
                 selectionMode: SelectionMode.single,
                 navigationMode: GridNavigationMode.cell,
                 frozenColumnsCount: 1,
