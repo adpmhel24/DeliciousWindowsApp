@@ -35,6 +35,8 @@ class _OrderDetailsState extends State<OrderDetails> {
   final TextEditingController _remarksController = TextEditingController();
   final TextEditingController _paymentRefController = TextEditingController();
   final TextEditingController _paidAmount = TextEditingController();
+  final TextEditingController _otherFeeController = TextEditingController();
+  final TextEditingController _delFeeController = TextEditingController();
 
   String? _dispatchingWhseSelected;
   String? _discTypeSelected;
@@ -60,6 +62,10 @@ class _OrderDetailsState extends State<OrderDetails> {
     _orderStatusSelected = widget.orderRepo.order.orderStatus;
     _paidAmount.text =
         (widget.orderRepo.order.paidAmount ?? 0).toStringAsFixed(2);
+    _otherFeeController.text =
+        (widget.orderRepo.order.otherfee ?? 0).toStringAsFixed(2);
+    _delFeeController.text =
+        (widget.orderRepo.order.delfee ?? 0).toStringAsFixed(2);
     _warehouses = _warehouseRepo.whses;
     _discountTypes = _discountTypeRepo.discTypes;
     _salesTypes = _salesTypesRepo.salesType;
@@ -82,6 +88,8 @@ class _OrderDetailsState extends State<OrderDetails> {
     _remarksController.dispose();
     _paymentRefController.dispose();
     _paidAmount.dispose();
+    _otherFeeController.dispose();
+    _delFeeController.dispose();
     super.dispose();
   }
 
@@ -106,9 +114,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 20.h,
-              ),
+              SizedBox(height: 20.h),
               const OrderRowsTable(),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8.w),
@@ -152,25 +158,55 @@ class _OrderDetailsState extends State<OrderDetails> {
                           ),
                           InfoLabelRow(
                             label: "Delivery Fee:",
-                            child: Text(
-                              formatStringToDecimal(
-                                widget.orderRepo.order.delfee.toString(),
-                                hasCurrency: true,
-                              ),
+                            child: TextBox(
+                              controller: _delFeeController,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(
+                                    RegExp("[0-9.]"))
+                              ],
+                              onChanged: (value) {
+                                double delfee = double.tryParse(value) ?? 0;
+                                widget.orderRepo.updateDeliverFee(
+                                    double.parse(delfee.toStringAsFixed(2)));
+                              },
                             ),
                           ),
+                          // InfoLabelRow(
+                          //   label: "Delivery Fee:",
+                          //   child: Text(
+                          //     formatStringToDecimal(
+                          //       widget.orderRepo.order.delfee.toString(),
+                          //       hasCurrency: true,
+                          //     ),
+                          //   ),
+                          // ),
                           SizedBox(
                             height: 10.h,
                           ),
                           InfoLabelRow(
                             label: "Other Fee:",
-                            child: Text(
-                              formatStringToDecimal(
-                                widget.orderRepo.order.otherfee.toString(),
-                                hasCurrency: true,
-                              ),
+                            child: TextBox(
+                              controller: _otherFeeController,
+                              inputFormatters: <TextInputFormatter>[
+                                FilteringTextInputFormatter.allow(
+                                    RegExp("[0-9.]"))
+                              ],
+                              onChanged: (value) {
+                                double otherfee = double.tryParse(value) ?? 0;
+                                widget.orderRepo.updateOtherFee(
+                                    double.parse(otherfee.toStringAsFixed(2)));
+                              },
                             ),
                           ),
+                          // InfoLabelRow(
+                          //   label: "Other Fee:",
+                          //   child: Text(
+                          //     formatStringToDecimal(
+                          //       widget.orderRepo.order.otherfee.toString(),
+                          //       hasCurrency: true,
+                          //     ),
+                          //   ),
+                          // ),
                           SizedBox(
                             height: 10.h,
                           ),
@@ -201,9 +237,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 15.h,
-              ),
+              SizedBox(height: 15.h),
               Align(
                 alignment: Alignment.bottomRight,
                 child: Padding(
@@ -464,7 +498,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                       double.parse(paidAmnt.toStringAsFixed(2)));
                 },
               ),
-            )
+            ),
           ],
         ),
       ),

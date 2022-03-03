@@ -53,8 +53,8 @@ Map<String, dynamic> _$OrderHeaderModelToJson(OrderHeaderModel instance) {
   writeNotNull('cust_code', OrderHeaderModel.toNull(instance.custCode));
   writeNotNull('details', OrderHeaderModel.toNull(instance.details));
   writeNotNull('subtotal', OrderHeaderModel.toNull(instance.subtotal));
-  writeNotNull('delfee', OrderHeaderModel.toNull(instance.delfee));
-  writeNotNull('otherfee', OrderHeaderModel.toNull(instance.otherfee));
+  val['delfee'] = instance.delfee;
+  val['otherfee'] = instance.otherfee;
   writeNotNull('doctotal', OrderHeaderModel.toNull(instance.doctotal));
   val['paid_amount'] = instance.paidAmount;
   writeNotNull('balance', OrderHeaderModel.toNull(instance.balance));

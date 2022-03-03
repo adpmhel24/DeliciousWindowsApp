@@ -55,20 +55,21 @@ class CustomDialog {
     showDialog(
       context: context,
       builder: (_) {
-        return ContentDialog(
-          title: Text(title ?? "Error Message"),
-          content: Text(
-            message ?? "Something wrong, please check.",
-            overflow: TextOverflow.ellipsis,
+        return SingleChildScrollView(
+          child: ContentDialog(
+            title: Text(title ?? "Error Message"),
+            content: Text(
+              message ?? "Something wrong, please check.",
+            ),
+            actions: actions ??
+                [
+                  Button(
+                      child: const Text('Ok'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      })
+                ],
           ),
-          actions: actions ??
-              [
-                Button(
-                    child: const Text('Ok'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    })
-              ],
         );
       },
     );

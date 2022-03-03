@@ -24,9 +24,8 @@ class OrderHeaderModel {
   @JsonKey(toJson: toNull, includeIfNull: false)
   double? subtotal;
 
-  @JsonKey(toJson: toNull, includeIfNull: false)
   double? delfee;
-  @JsonKey(toJson: toNull, includeIfNull: false)
+
   double? otherfee;
   @JsonKey(toJson: toNull, includeIfNull: false)
   double? doctotal;

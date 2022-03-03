@@ -4,14 +4,17 @@ import 'package:delicious_windows_app/presentations/screens/orders_screen/orders
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../../../data/repositories/order_repo.dart';
 import '../../../utils/constant.dart';
 import '../../../utils/currency_formater.dart';
 import '../../../utils/responsive.dart';
 import '../../../utils/size_config.dart';
 import '../../../widgets/custom_dialog.dart';
 import '../../../widgets/custom_large_dialog.dart';
+import '../../../widgets/remarks_dialog.dart';
 import '../order_details/order_bloc/bloc.dart';
 import '../order_details/order_details_read_only/order_details_read_only.dart';
 
@@ -230,6 +233,9 @@ class _ForDispatchState extends State<ForDispatch> {
               listenWhen: (previous, current) =>
                   current is FetchingOrderState ||
                   current is OrderLoadedState ||
+                  current is OrderCancelSubmitting ||
+                  current is OrderCanceledSuccessfully ||
+                  current is OrderCancelError ||
                   current is FetchingErrorState,
               listener: (context, state) {
                 if (state is FetchingOrderState) {
@@ -258,6 +264,22 @@ class _ForDispatchState extends State<ForDispatch> {
                   );
                 } else if (state is FetchingErrorState) {
                   CustomDialog.error(context, message: state.message);
+                } else if (state is OrderCancelSubmitting) {
+                  CustomDialog.loading(context);
+                } else if (state is OrderCanceledSuccessfully) {
+                  CustomDialog.success(context,
+                      message: "Successfully canceled",
+                      actions: [
+                        Button(
+                            child: const Text('Okay'),
+                            onPressed: () {
+                              widget.gridKey.currentState!.refresh(false);
+
+                              Navigator.of(context).pop();
+                            }),
+                      ]);
+                } else if (state is OrderCancelError) {
+                  CustomDialog.error(context, message: state.message);
                 }
               },
               child: SfDataGrid(
@@ -279,6 +301,57 @@ class _ForDispatchState extends State<ForDispatch> {
                 isScrollbarAlwaysShown: true,
                 columns: columnNames(),
                 columnWidthMode: ColumnWidthMode.auto,
+                allowSwiping: true,
+                swipeMaxOffset: 100.0,
+                startSwipeActionsBuilder:
+                    (BuildContext context, DataGridRow row, int rowIndex) {
+                  return GestureDetector(
+                    onTap: () {
+                      int id = _ordersDataSource.dataGridRows[rowIndex]
+                          .getCells()[0]
+                          .value;
+                      CustomDialog.warning(context,
+                          message: "Are you sure you want to cancel?",
+                          actions: [
+                            Button(
+                                child: const Text('Cancel'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                }),
+                            Button(
+                                child: const Text('Okay'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  showDialog(
+                                      context: context,
+                                      builder: (_) {
+                                        return DialogRemarks(
+                                          submitRemarks: (String remarks) {
+                                            context.read<OrderBloc>().add(
+                                                  SubmitCancelOrder(
+                                                      orderId: id,
+                                                      orderRepo: Provider.of<
+                                                              OrderRepository>(
+                                                          context,
+                                                          listen: false),
+                                                      data: {
+                                                        "comment": remarks
+                                                      }),
+                                                );
+                                          },
+                                        );
+                                      });
+                                }),
+                          ]);
+                    },
+                    child: Container(
+                      color: Colors.red.normal,
+                      child: const Center(
+                        child: Icon(FluentIcons.delete),
+                      ),
+                    ),
+                  );
+                },
                 onQueryRowHeight: (details) {
                   return details.getIntrinsicRowHeight(details.rowIndex);
                 },

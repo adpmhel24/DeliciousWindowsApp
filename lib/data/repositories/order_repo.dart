@@ -74,6 +74,22 @@ class OrderRepository extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateDeliverFee(double value) {
+    order.delfee = value;
+    order.doctotal =
+        (order.subtotal ?? 0) + (order.delfee ?? 0) + (order.otherfee ?? 0);
+    order.balance = (order.doctotal ?? 0) - (order.paidAmount ?? 0);
+    notifyListeners();
+  }
+
+  void updateOtherFee(double value) {
+    order.otherfee = value;
+    order.doctotal =
+        (order.subtotal ?? 0) + (order.delfee ?? 0) + (order.otherfee ?? 0);
+    order.balance = (order.doctotal ?? 0) - (order.paidAmount ?? 0);
+    notifyListeners();
+  }
+
   void updateDiscountPercentage(int rowId, double value) {
     var orderRow = order.rows[rowId];
     double gross = orderRow.quantity * orderRow.unitPrice;
