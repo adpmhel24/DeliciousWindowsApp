@@ -4,3 +4,5 @@ export 'orders/order_row/order_row_model.dart';
 export 'disc_type/disc_type_model.dart';
 export 'sales_type/sales_type_model.dart';
 export 'warehouse/whse_model.dart';
+export 'comment/comment_model.dart';
+export 'orders/order_model.dart';

@@ -57,156 +57,9 @@ class _ForDispatchState extends State<ForDispatch> {
     OrderTableHeader.address: double.nan,
     OrderTableHeader.user: double.nan,
     OrderTableHeader.paymentStatus: double.nan,
+    OrderTableHeader.confirmedBy: double.nan,
+    OrderTableHeader.dateConfirmed: double.nan,
   };
-
-  List<GridColumn> columnNames() {
-    return [
-      GridColumn(
-        width: columnWidths[OrderTableHeader.id]!,
-        columnName: OrderTableHeader.id,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.id,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.transdate]!,
-        columnName: OrderTableHeader.transdate,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.transdate,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.deliveryDate]!,
-        columnName: OrderTableHeader.deliveryDate,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.deliveryDate,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.custCode]!,
-        columnName: OrderTableHeader.custCode,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.custCode,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.details]!,
-        columnName: OrderTableHeader.details,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.details,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.balance]!,
-        columnName: OrderTableHeader.balance,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.balance,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.paymentStatus]!,
-        columnName: OrderTableHeader.paymentStatus,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.paymentStatus,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.deliveryMethod]!,
-        columnName: OrderTableHeader.deliveryMethod,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.deliveryMethod,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.paymentMethod]!,
-        columnName: OrderTableHeader.paymentMethod,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.paymentMethod,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.remarks]!,
-        columnName: OrderTableHeader.remarks,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.remarks,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.address]!,
-        columnName: OrderTableHeader.address,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.address,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.user]!,
-        columnName: OrderTableHeader.user,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.user,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-    ];
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -299,7 +152,7 @@ class _ForDispatchState extends State<ForDispatch> {
                 },
                 allowPullToRefresh: true,
                 isScrollbarAlwaysShown: true,
-                columns: columnNames(),
+                columns: OrderTableHeader.forDispatchColumns(columnWidths),
                 columnWidthMode: ColumnWidthMode.auto,
                 allowSwiping: true,
                 swipeMaxOffset: 100.0,
@@ -394,7 +247,7 @@ class OrdersDataSource extends DataGridSource {
               DataGridCell<int>(columnName: OrderTableHeader.id, value: e.id),
               DataGridCell<String>(
                   columnName: OrderTableHeader.transdate,
-                  value: DateFormat("MM/dd/yyyy").format(e.transdate!)),
+                  value: DateFormat("MM/dd/yyyy HH:MM").format(e.transdate!)),
               DataGridCell<String>(
                   columnName: OrderTableHeader.deliveryDate,
                   value: DateFormat("MM/dd/yyyy").format(e.deliveryDate!)),
@@ -421,6 +274,14 @@ class OrdersDataSource extends DataGridSource {
                   columnName: OrderTableHeader.address, value: e.address),
               DataGridCell<String>(
                   columnName: OrderTableHeader.user, value: e.user),
+              DataGridCell<String>(
+                  columnName: OrderTableHeader.confirmedBy,
+                  value: e.confirmedBy ?? ""),
+              DataGridCell<String>(
+                  columnName: OrderTableHeader.dateConfirmed,
+                  value: e.dateConfirmed != null
+                      ? DateFormat("MM/dd/yyyy HH:MM").format(e.dateConfirmed!)
+                      : ""),
             ]))
         .toList();
   }

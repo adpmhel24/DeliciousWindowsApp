@@ -1,17 +1,20 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:delicious_windows_app/data/models/models.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api_services/apis.dart';
-import '../models/orders/order_model.dart';
+import '../models/models.dart';
 
 class OrderRepository extends ChangeNotifier {
   final OrdersAPI _ordersAPI = OrdersAPI();
   late OrderModel _order;
+  List<CommentModel> _comments = [];
+
+  List<CommentModel> get comments => [..._comments];
+
   OrderModel get order => _order;
 
   Future<bool> fetchOrderById(int orderId) async {
@@ -24,6 +27,26 @@ class OrderRepository extends ChangeNotifier {
         _order = OrderModel.fromJson(response.data['data']);
         notifyListeners();
         return true;
+      } else {
+        throw HttpException(response.data['message']);
+      }
+    } on HttpException catch (e) {
+      throw HttpException(e.message);
+    }
+  }
+
+  Future<void> fetchCommentByOrderId(int orderId) async {
+    Response response;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = json.decode(prefs.getString("userData")!)["token"];
+    try {
+      response = await _ordersAPI.getCommentByOrderId(token, orderId: orderId);
+      if (response.statusCode == 200) {
+        _comments = List<CommentModel>.from(
+          response.data['data'].map(
+            (comment) => CommentModel.fromJson(comment),
+          ),
+        );
       } else {
         throw HttpException(response.data['message']);
       }

@@ -436,7 +436,7 @@ class OrdersDataSource extends DataGridSource {
               DataGridCell<int>(columnName: OrderTableHeader.id, value: e.id),
               DataGridCell<String>(
                   columnName: OrderTableHeader.transdate,
-                  value: DateFormat("MM/dd/yyyy").format(e.transdate!)),
+                  value: DateFormat("MM/dd/yyyy HH:MM").format(e.transdate!)),
               DataGridCell<String>(
                   columnName: OrderTableHeader.deliveryDate,
                   value: DateFormat("MM/dd/yyyy").format(e.deliveryDate!)),

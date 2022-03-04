@@ -9,7 +9,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../data/models/orders/order_model.dart';
 import '../../../../utils/currency_formater.dart';
 import '../../../../widgets/custom_dialog.dart';
 import '../../../../widgets/info_label_row.dart';

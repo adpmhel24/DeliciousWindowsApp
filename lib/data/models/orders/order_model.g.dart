@@ -36,7 +36,19 @@ OrderModel _$OrderModelFromJson(Map<String, dynamic> json) => OrderModel(
       ..disctype = json['disctype'] as String?
       ..paymentReference = json['payment_reference'] as String?
       ..salesReference = json['sales_reference'] as String?
-      ..user = json['user'] as String?;
+      ..user = json['user'] as String?
+      ..confirmedBy = json['confirmed_by'] as String?
+      ..dispatchedBy = json['dispatched_by'] as String?
+      ..canceledBy = json['canceled_by'] as String?
+      ..dateConfirmed = json['date_confirmed'] == null
+          ? null
+          : DateTime.parse(json['date_confirmed'] as String)
+      ..dateDispatched = json['date_dispatched'] == null
+          ? null
+          : DateTime.parse(json['date_dispatched'] as String)
+      ..dateCanceled = json['date_canceled'] == null
+          ? null
+          : DateTime.parse(json['date_canceled'] as String);
 
 Map<String, dynamic> _$OrderModelToJson(OrderModel instance) {
   final val = <String, dynamic>{};
@@ -74,6 +86,14 @@ Map<String, dynamic> _$OrderModelToJson(OrderModel instance) {
   writeNotNull(
       'sales_reference', OrderHeaderModel.toNull(instance.salesReference));
   writeNotNull('user', OrderHeaderModel.toNull(instance.user));
+  writeNotNull('confirmed_by', OrderHeaderModel.toNull(instance.confirmedBy));
+  writeNotNull('dispatched_by', OrderHeaderModel.toNull(instance.dispatchedBy));
+  writeNotNull('canceled_by', OrderHeaderModel.toNull(instance.canceledBy));
+  writeNotNull(
+      'date_confirmed', OrderHeaderModel.toNull(instance.dateConfirmed));
+  writeNotNull(
+      'date_dispatched', OrderHeaderModel.toNull(instance.dateDispatched));
+  writeNotNull('date_canceled', OrderHeaderModel.toNull(instance.dateCanceled));
   val['rows'] = OrderModel._orderRowToJson(instance.rows);
   return val;
 }
