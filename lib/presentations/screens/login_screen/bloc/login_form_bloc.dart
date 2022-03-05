@@ -1,8 +1,8 @@
 import 'dart:io';
 
-import 'package:delicious_windows_app/data/repositories/app_repo.dart';
-import 'package:delicious_windows_app/data/repositories/auth_repo.dart';
-import 'package:delicious_windows_app/presentations/utils/text_field_validator.dart';
+import '/data/repositories/app_repo.dart';
+import '/data/repositories/auth_repo.dart';
+import '/presentations/utils/text_field_validator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:formz/formz.dart';
 

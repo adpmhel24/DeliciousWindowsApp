@@ -1,7 +1,7 @@
-import 'package:delicious_windows_app/data/models/models.dart';
+import '/data/models/models.dart';
 
-import 'package:delicious_windows_app/data/repositories/repositories.dart';
-import 'package:delicious_windows_app/presentations/widgets/custom_dialog.dart';
+import '/data/repositories/repositories.dart';
+import '/presentations/widgets/custom_dialog.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter/services.dart';

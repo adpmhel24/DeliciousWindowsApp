@@ -1,5 +1,5 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:delicious_windows_app/router/router.gr.dart';
+import '/router/router.gr.dart';
 import '../data/repositories/auth_repo.dart';
 
 class RouteGuard extends AutoRedirectGuard {

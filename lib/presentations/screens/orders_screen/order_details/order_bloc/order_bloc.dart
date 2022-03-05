@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:delicious_windows_app/data/repositories/repositories.dart';
+import '/data/repositories/repositories.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc.dart';

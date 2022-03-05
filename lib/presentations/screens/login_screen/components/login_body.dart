@@ -1,5 +1,5 @@
-import 'package:delicious_windows_app/presentations/screens/login_screen/bloc/login_form_bloc.dart';
-import 'package:delicious_windows_app/presentations/screens/login_screen/bloc/login_form_event.dart';
+import '/presentations/screens/login_screen/bloc/login_form_bloc.dart';
+import '/presentations/screens/login_screen/bloc/login_form_event.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter_bloc/flutter_bloc.dart';

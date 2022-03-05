@@ -1,4 +1,4 @@
-import 'package:delicious_windows_app/data/models/models.dart';
+import '/data/models/models.dart';
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:uuid/uuid.dart';

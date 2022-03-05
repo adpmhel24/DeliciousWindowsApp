@@ -1,4 +1,4 @@
-import 'package:delicious_windows_app/data/models/models.dart';
+import '/data/models/models.dart';
 import 'package:equatable/equatable.dart';
 
 enum OrderCommentStatus { init, loading, success, failed }

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:delicious_windows_app/data/models/orders/order_model.dart';
+import '/data/models/orders/order_model.dart';
 import 'package:dio/dio.dart';
 import 'dart:convert';
 

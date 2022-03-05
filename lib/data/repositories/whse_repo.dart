@@ -1,7 +1,7 @@
 import 'dart:io';
 
-import 'package:delicious_windows_app/data/api_services/apis.dart';
-import 'package:delicious_windows_app/data/models/models.dart';
+import '/data/api_services/apis.dart';
+import '/data/models/models.dart';
 import 'package:dio/dio.dart';
 
 import 'repositories.dart';

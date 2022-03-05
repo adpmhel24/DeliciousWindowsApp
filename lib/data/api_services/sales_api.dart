@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:delicious_windows_app/data/api_services/dio_settings.dart';
+import '/data/api_services/dio_settings.dart';
 import 'package:dio/dio.dart';
 
 class SalesAPI {

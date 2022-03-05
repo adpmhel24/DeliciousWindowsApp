@@ -1,5 +1,5 @@
 import 'package:badges/badges.dart';
-import 'package:delicious_windows_app/presentations/screens/orders_screen/orders_bloc/blocs.dart';
+import '/presentations/screens/orders_screen/orders_bloc/blocs.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

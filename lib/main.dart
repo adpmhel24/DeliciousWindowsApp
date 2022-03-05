@@ -1,5 +1,5 @@
-import 'package:delicious_windows_app/global_bloc/global_blocs.dart';
-import 'package:delicious_windows_app/router/router.gr.dart';
+import '/global_bloc/global_blocs.dart';
+import '/router/router.gr.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

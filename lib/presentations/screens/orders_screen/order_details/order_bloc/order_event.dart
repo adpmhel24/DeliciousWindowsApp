@@ -1,4 +1,4 @@
-import 'package:delicious_windows_app/data/repositories/repositories.dart';
+import '/data/repositories/repositories.dart';
 import 'package:equatable/equatable.dart';
 
 abstract class OrderEvent extends Equatable {

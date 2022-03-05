@@ -1,4 +1,4 @@
-import 'package:delicious_windows_app/global_bloc/whse_bloc/bloc.dart';
+import '/global_bloc/whse_bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import './disc_type_bloc/bloc.dart';

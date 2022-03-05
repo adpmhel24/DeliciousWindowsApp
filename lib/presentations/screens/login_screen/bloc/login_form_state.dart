@@ -1,4 +1,4 @@
-import 'package:delicious_windows_app/presentations/utils/text_field_validator.dart';
+import '/presentations/utils/text_field_validator.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
 
