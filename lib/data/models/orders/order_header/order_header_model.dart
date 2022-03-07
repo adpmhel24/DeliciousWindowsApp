@@ -20,6 +20,9 @@ class OrderHeaderModel {
   @JsonKey(name: 'cust_code', toJson: toNull, includeIfNull: false)
   String? custCode;
 
+  @JsonKey(name: 'contact_number', toJson: toNull, includeIfNull: false)
+  String? contactNumber;
+
   @JsonKey(toJson: toNull, includeIfNull: false)
   String? details;
 

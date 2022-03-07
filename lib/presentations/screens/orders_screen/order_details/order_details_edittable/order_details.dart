@@ -554,6 +554,16 @@ class _OrderDetailsState extends State<OrderDetails> {
             height: 10.h,
           ),
           InfoLabelRow(
+            label: "Contact No:",
+            child: Text(
+              orderRepo.order.contactNumber ?? "",
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          SizedBox(
+            height: 10.h,
+          ),
+          InfoLabelRow(
             label: "Delivery Address:",
             child: Text(
               orderRepo.order.address ?? "",

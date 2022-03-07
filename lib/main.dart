@@ -16,7 +16,7 @@ void main() async {
   // // Must add this line.
   // await windowManager.ensureInitialized();
 
-  // // Use it only after calling `hiddenWindowAtLaunch`
+  // // // Use it only after calling `hiddenWindowAtLaunch`
   // windowManager.waitUntilReadyToShow().then((_) async {
   //   await windowManager.setMinimumSize(const Size(1024, 640));
   //   await windowManager.center();
