@@ -19,15 +19,15 @@ import '../order_details/order_bloc/bloc.dart';
 import '../order_details/order_details_read_only/order_details_read_only.dart';
 
 class ForDispatch extends StatefulWidget {
-  const ForDispatch(
-      {Key? key,
-      required this.gridKey,
-      required this.startDate,
-      required this.endDate})
-      : super(key: key);
+  const ForDispatch({
+    Key? key,
+    required this.gridKey,
+    this.startDate,
+    this.endDate,
+  }) : super(key: key);
   final GlobalKey<SfDataGridState> gridKey;
-  final DateTime startDate;
-  final DateTime endDate;
+  final DateTime? startDate;
+  final DateTime? endDate;
 
   @override
   State<ForDispatch> createState() => _ForDispatchState();
@@ -49,6 +49,7 @@ class _ForDispatchState extends State<ForDispatch> {
     OrderTableHeader.transdate: double.nan,
     OrderTableHeader.deliveryDate: double.nan,
     OrderTableHeader.custCode: double.nan,
+    OrderTableHeader.customerType: double.nan,
     OrderTableHeader.details: double.nan,
     OrderTableHeader.balance: double.nan,
     OrderTableHeader.deliveryMethod: double.nan,
@@ -253,6 +254,9 @@ class OrdersDataSource extends DataGridSource {
                   value: DateFormat("MM/dd/yyyy").format(e.deliveryDate!)),
               DataGridCell<String>(
                   columnName: OrderTableHeader.custCode, value: e.custCode),
+              DataGridCell<String>(
+                  columnName: OrderTableHeader.customerType,
+                  value: e.customerType),
               DataGridCell<String>(
                   columnName: OrderTableHeader.details, value: e.details),
               DataGridCell<String>(

@@ -20,6 +20,9 @@ class OrderHeaderModel {
   @JsonKey(name: 'cust_code', toJson: toNull, includeIfNull: false)
   String? custCode;
 
+  @JsonKey(name: 'customer_type', toJson: toNull, includeIfNull: false)
+  String? customerType;
+
   @JsonKey(name: 'contact_number', toJson: toNull, includeIfNull: false)
   String? contactNumber;
 
@@ -99,6 +102,7 @@ class OrderHeaderModel {
     this.transdate,
     this.deliveryDate,
     this.custCode,
+    this.customerType,
     this.details,
     this.subtotal,
     this.delfee,
@@ -134,6 +138,7 @@ class OrderTableHeader {
   static const transdate = 'Transaction Date';
   static const deliveryDate = 'Delivery Date';
   static const custCode = 'Customer Code';
+  static const customerType = 'Customer Type';
   static const details = 'Details';
   static const subtotal = 'Subtotal';
   static const delfee = 'Delivery Fee';
@@ -157,6 +162,192 @@ class OrderTableHeader {
   static const dateDispatched = 'Date Dispatched';
   static const dateCanceled = 'Date Canceled';
   static const comments = 'Comments';
+
+  static List<GridColumn> forConfirmationColumns(
+      Map<String, dynamic> columnWidths) {
+    return [
+      GridColumn(
+        width: columnWidths[OrderTableHeader.id]!,
+        columnName: OrderTableHeader.id,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderTableHeader.id,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      GridColumn(
+        width: columnWidths[OrderTableHeader.transdate]!,
+        columnName: OrderTableHeader.transdate,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderTableHeader.transdate,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      GridColumn(
+        width: columnWidths[OrderTableHeader.deliveryDate]!,
+        columnName: OrderTableHeader.deliveryDate,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderTableHeader.deliveryDate,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      GridColumn(
+        width: columnWidths[OrderTableHeader.custCode]!,
+        columnName: OrderTableHeader.custCode,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderTableHeader.custCode,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      GridColumn(
+        width: columnWidths[OrderTableHeader.customerType]!,
+        columnName: OrderTableHeader.customerType,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderTableHeader.customerType,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      GridColumn(
+        width: columnWidths[OrderTableHeader.details]!,
+        columnName: OrderTableHeader.details,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderTableHeader.details,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      GridColumn(
+        width: columnWidths[OrderTableHeader.subtotal]!,
+        columnName: OrderTableHeader.subtotal,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderTableHeader.subtotal,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      GridColumn(
+        width: columnWidths[OrderTableHeader.delfee]!,
+        columnName: OrderTableHeader.delfee,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderTableHeader.delfee,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      GridColumn(
+        width: columnWidths[OrderTableHeader.otherfee]!,
+        columnName: OrderTableHeader.otherfee,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderTableHeader.otherfee,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      GridColumn(
+        width: columnWidths[OrderTableHeader.doctotal]!,
+        columnName: OrderTableHeader.doctotal,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderTableHeader.doctotal,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      GridColumn(
+        width: columnWidths[OrderTableHeader.deliveryMethod]!,
+        columnName: OrderTableHeader.deliveryMethod,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderTableHeader.deliveryMethod,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      GridColumn(
+        width: columnWidths[OrderTableHeader.paymentMethod]!,
+        columnName: OrderTableHeader.paymentMethod,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderTableHeader.paymentMethod,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      GridColumn(
+        width: columnWidths[OrderTableHeader.remarks]!,
+        columnName: OrderTableHeader.remarks,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderTableHeader.remarks,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      GridColumn(
+        width: columnWidths[OrderTableHeader.address]!,
+        columnName: OrderTableHeader.address,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderTableHeader.address,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      GridColumn(
+        width: columnWidths[OrderTableHeader.user]!,
+        columnName: OrderTableHeader.user,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderTableHeader.user,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+    ];
+  }
 
   static List<GridColumn> forDispatchColumns(
       Map<String, dynamic> columnWidths) {
@@ -205,6 +396,18 @@ class OrderTableHeader {
           alignment: Alignment.center,
           child: const Text(
             OrderTableHeader.custCode,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      GridColumn(
+        width: columnWidths[OrderTableHeader.customerType]!,
+        columnName: OrderTableHeader.customerType,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderTableHeader.customerType,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -390,6 +593,18 @@ class OrderTableHeader {
           alignment: Alignment.center,
           child: const Text(
             OrderTableHeader.custCode,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      GridColumn(
+        width: columnWidths[OrderTableHeader.customerType]!,
+        columnName: OrderTableHeader.customerType,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderTableHeader.customerType,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),
@@ -599,6 +814,18 @@ class OrderTableHeader {
           alignment: Alignment.center,
           child: const Text(
             OrderTableHeader.custCode,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+        ),
+      ),
+      GridColumn(
+        width: columnWidths[OrderTableHeader.customerType]!,
+        columnName: OrderTableHeader.customerType,
+        label: Container(
+          padding: const EdgeInsets.all(8.0),
+          alignment: Alignment.center,
+          child: const Text(
+            OrderTableHeader.customerType,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
         ),

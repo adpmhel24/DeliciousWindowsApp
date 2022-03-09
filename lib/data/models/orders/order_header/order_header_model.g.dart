@@ -16,6 +16,7 @@ OrderHeaderModel _$OrderHeaderModelFromJson(Map<String, dynamic> json) =>
           ? null
           : DateTime.parse(json['delivery_date'] as String),
       custCode: json['cust_code'] as String?,
+      customerType: json['customer_type'] as String?,
       details: json['details'] as String?,
       subtotal: (json['subtotal'] as num?)?.toDouble(),
       delfee: (json['delfee'] as num?)?.toDouble(),
@@ -64,6 +65,7 @@ Map<String, dynamic> _$OrderHeaderModelToJson(OrderHeaderModel instance) {
   writeNotNull('transdate', OrderHeaderModel.toNull(instance.transdate));
   writeNotNull('delivery_date', OrderHeaderModel.toNull(instance.deliveryDate));
   writeNotNull('cust_code', OrderHeaderModel.toNull(instance.custCode));
+  writeNotNull('customer_type', OrderHeaderModel.toNull(instance.customerType));
   writeNotNull(
       'contact_number', OrderHeaderModel.toNull(instance.contactNumber));
   writeNotNull('details', OrderHeaderModel.toNull(instance.details));

@@ -300,6 +300,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "8.0.1"
+  flutter_custom_cards:
+    dependency: "direct main"
+    description:
+      name: flutter_custom_cards
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.2.1"
   flutter_launcher_icons:
     dependency: "direct dev"
     description:
@@ -430,7 +437,7 @@ packages:
     source: hosted
     version: "0.6.3"
   json_annotation:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: json_annotation
       url: "https://pub.dartlang.org"
@@ -762,7 +769,7 @@ packages:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "19.4.52"
+    version: "19.4.55"
   syncfusion_flutter_datagrid:
     dependency: "direct main"
     description:
@@ -770,6 +777,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "19.4.52"
+  syncfusion_flutter_datepicker:
+    dependency: "direct main"
+    description:
+      name: syncfusion_flutter_datepicker
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "19.4.55"
   term_glyph:
     dependency: transitive
     description:

@@ -3,25 +3,15 @@ import '/router/router.gr.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-// import 'package:window_manager/window_manager.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:window_size/window_size.dart';
 
 import 'presentations/utils/size_config.dart';
 import 'router/router_guard.dart';
 
-void main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
   setWindowMinSize(const Size(1024, 640));
-  // // Must add this line.
-  // await windowManager.ensureInitialized();
-
-  // // // Use it only after calling `hiddenWindowAtLaunch`
-  // windowManager.waitUntilReadyToShow().then((_) async {
-  //   await windowManager.setMinimumSize(const Size(1024, 640));
-  //   await windowManager.center();
-  //   await windowManager.show();
-  // });
   runApp(const MainApp());
 }
 

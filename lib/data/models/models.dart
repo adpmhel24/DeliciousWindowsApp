@@ -6,3 +6,6 @@ export 'sales_type/sales_type_model.dart';
 export 'warehouse/whse_model.dart';
 export 'comment/comment_model.dart';
 export 'orders/order_model.dart';
+export 'customer/customer_model.dart';
+export 'customer/customer_address_model.dart';
+export 'customer_type/customer_type_model.dart';

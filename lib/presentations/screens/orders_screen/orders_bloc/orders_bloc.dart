@@ -21,14 +21,11 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
     try {
       await _ordersRepository.fetchOrders(params: {
         "order_status": 0,
-        "from_date": DateFormat('MM/dd/yyy')
-            .format(event.startDate ??
-                DateTime.now().subtract(const Duration(days: 14)))
-            .toString(),
-        "to_date": DateFormat('MM/dd/yyy')
-            .format(
-                event.endDate ?? DateTime.now().add(const Duration(days: 30)))
-            .toString()
+        if (event.startDate != null)
+          "from_date":
+              DateFormat('MM/dd/yyy').format(event.startDate!).toString(),
+        if (event.endDate != null)
+          "to_date": DateFormat('MM/dd/yyy').format(event.endDate!).toString()
       });
       emit(OrdersLoaded(_ordersRepository.orders));
     } on HttpException catch (e) {
@@ -43,14 +40,11 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
     try {
       await _ordersRepository.fetchOrders(params: {
         "order_status": 1,
-        "from_date": DateFormat('MM/dd/yyy')
-            .format(event.startDate ??
-                DateTime.now().subtract(const Duration(days: 14)))
-            .toString(),
-        "to_date": DateFormat('MM/dd/yyy')
-            .format(
-                event.endDate ?? DateTime.now().add(const Duration(days: 30)))
-            .toString()
+        if (event.startDate != null)
+          "from_date":
+              DateFormat('MM/dd/yyy').format(event.startDate!).toString(),
+        if (event.endDate != null)
+          "to_date": DateFormat('MM/dd/yyy').format(event.endDate!).toString(),
       });
       emit(OrdersLoaded(_ordersRepository.orders));
     } on HttpException catch (e) {
@@ -65,13 +59,11 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
     try {
       await _ordersRepository.fetchOrders(params: {
         "docstatus": "C",
-        "from_date": DateFormat('MM/dd/yyy')
-            .format(event.startDate ?? DateTime.now())
-            .toString(),
-        "to_date": DateFormat('MM/dd/yyy')
-            .format(
-                event.endDate ?? DateTime.now().add(const Duration(days: 7)))
-            .toString()
+        if (event.startDate != null)
+          "from_date":
+              DateFormat('MM/dd/yyy').format(event.startDate!).toString(),
+        if (event.endDate != null)
+          "to_date": DateFormat('MM/dd/yyy').format(event.endDate!).toString(),
       });
       emit(OrdersLoaded(_ordersRepository.orders));
     } on HttpException catch (e) {
@@ -87,13 +79,12 @@ class OrdersBloc extends Bloc<OrdersEvent, OrdersState> {
       await _ordersRepository.fetchOrders(
         params: {
           "docstatus": "N",
-          "from_date": DateFormat('MM/dd/yyy')
-              .format(event.startDate ?? DateTime.now())
-              .toString(),
-          "to_date": DateFormat('MM/dd/yyy')
-              .format(
-                  event.endDate ?? DateTime.now().add(const Duration(days: 7)))
-              .toString(),
+          if (event.startDate != null)
+            "from_date":
+                DateFormat('MM/dd/yyy').format(event.startDate!).toString(),
+          if (event.endDate != null)
+            "to_date":
+                DateFormat('MM/dd/yyy').format(event.endDate!).toString(),
         },
       );
       emit(OrdersLoaded(_ordersRepository.orders));

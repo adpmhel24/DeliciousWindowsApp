@@ -18,15 +18,15 @@ import '../order_details/order_bloc/bloc.dart';
 import '../order_details/order_details_read_only/order_details_read_only.dart';
 
 class CanceledOrders extends StatefulWidget {
-  const CanceledOrders(
-      {Key? key,
-      required this.gridKey,
-      required this.startDate,
-      required this.endDate})
-      : super(key: key);
+  const CanceledOrders({
+    Key? key,
+    required this.gridKey,
+    this.startDate,
+    this.endDate,
+  }) : super(key: key);
   final GlobalKey<SfDataGridState> gridKey;
-  final DateTime startDate;
-  final DateTime endDate;
+  final DateTime? startDate;
+  final DateTime? endDate;
 
   @override
   State<CanceledOrders> createState() => _CanceledOrdersState();
@@ -48,6 +48,7 @@ class _CanceledOrdersState extends State<CanceledOrders> {
     OrderTableHeader.transdate: double.nan,
     OrderTableHeader.deliveryDate: double.nan,
     OrderTableHeader.custCode: double.nan,
+    OrderTableHeader.customerType: double.nan,
     OrderTableHeader.details: double.nan,
     OrderTableHeader.subtotal: double.nan,
     OrderTableHeader.delfee: double.nan,
@@ -119,8 +120,10 @@ class _CanceledOrdersState extends State<CanceledOrders> {
         child: BlocBuilder<OrdersBloc, OrdersState>(
           builder: (_, state) {
             if (state is OrdersLoaded) {
-              _ordersDataSource =
-                  OrdersDataSource(context, orders: state.orders);
+              _ordersDataSource = OrdersDataSource(context,
+                  orders: state.orders,
+                  startDate: widget.startDate,
+                  endDate: widget.endDate);
 
               return SfDataGrid(
                 key: widget.gridKey,
@@ -168,8 +171,11 @@ class _CanceledOrdersState extends State<CanceledOrders> {
 
 class OrdersDataSource extends DataGridSource {
   late BuildContext _ordersContext;
+  DateTime? startDate;
+  DateTime? endDate;
 
-  OrdersDataSource(ordersContext, {required List<OrderHeaderModel> orders}) {
+  OrdersDataSource(ordersContext,
+      {required List<OrderHeaderModel> orders, this.startDate, this.endDate}) {
     _ordersContext = ordersContext;
     dataGridRows = orders
         .map<DataGridRow>(
@@ -207,6 +213,9 @@ class OrdersDataSource extends DataGridSource {
                   value: DateFormat("MM/dd/yyyy").format(e.deliveryDate!)),
               DataGridCell<String>(
                   columnName: OrderTableHeader.custCode, value: e.custCode),
+              DataGridCell<String>(
+                  columnName: OrderTableHeader.customerType,
+                  value: e.customerType),
               DataGridCell<String>(
                   columnName: OrderTableHeader.details, value: e.details),
               DataGridCell<String>(
@@ -258,7 +267,9 @@ class OrdersDataSource extends DataGridSource {
   @override
   Future<void> handleRefresh() async {
     await Future.delayed(const Duration(milliseconds: 200));
-    _ordersContext.read<OrdersBloc>().add(const FetchCanceledOrders());
+    _ordersContext
+        .read<OrdersBloc>()
+        .add(FetchCanceledOrders(startDate, endDate));
   }
 
   @override

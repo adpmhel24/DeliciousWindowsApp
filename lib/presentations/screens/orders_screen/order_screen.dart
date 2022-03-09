@@ -1,4 +1,7 @@
 import 'package:badges/badges.dart';
+import 'package:intl/intl.dart';
+import '../../widgets/custom_date_picker.dart';
+import '../../widgets/custom_label_info.dart';
 import '/presentations/screens/orders_screen/orders_bloc/blocs.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,8 +27,8 @@ class OrderScreen extends StatefulWidget {
 class _OrderScreenState extends State<OrderScreen> {
   final GlobalKey<SfDataGridState> gridKey = GlobalKey<SfDataGridState>();
 
-  DateTime startDate = DateTime.now().subtract(const Duration(days: 14));
-  DateTime endDate = DateTime.now().add(const Duration(days: 30));
+  DateTime? startDate;
+  DateTime? endDate;
 
   int currentIndex = 0;
 
@@ -56,33 +59,93 @@ class _OrderScreenState extends State<OrderScreen> {
               ),
               commandBar: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.end,
-                    spacing: 5.0,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       SizedBox(
-                        width: 295,
-                        child: DatePicker(
-                          header: 'Start Delivery Date',
-                          headerStyle:
-                              FluentTheme.of(context).typography.bodyLarge,
-                          selected: startDate,
-                          onChanged: (v) => setState(() => startDate = v),
+                        width: 150.w,
+                        child: LabelInfo(
+                          label: "Start Delivery Date",
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(startDate != null
+                                  ? DateFormat("MM/dd/yyyy").format(startDate!)
+                                  : ""),
+                              IconButton(
+                                icon: const Icon(FluentIcons.calendar),
+                                onPressed: () {
+                                  CustomDatePicker.singleDatePicker(
+                                    context,
+                                    initialSelectedDate: startDate,
+                                    onSubmit: (value) {
+                                      setState(() {
+                                        startDate = value != null
+                                            ? DateTime.parse(value.toString())
+                                            : null;
+                                      });
+
+                                      Navigator.of(context).pop();
+                                    },
+                                  );
+                                },
+                                style: ButtonStyle(
+                                  padding:
+                                      ButtonState.all(const EdgeInsets.all(5)),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(
-                        width: 295,
-                        child: DatePicker(
-                          header: 'End Delivery Date',
-                          headerStyle:
-                              FluentTheme.of(context).typography.bodyLarge,
-                          selected: endDate,
-                          onChanged: (v) => setState(() => endDate = v),
+                        width: 10.h,
+                      ),
+                      SizedBox(
+                        width: 150.w,
+                        child: LabelInfo(
+                          label: "End Delivery Date",
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(endDate != null
+                                  ? DateFormat("MM/dd/yyyy").format(endDate!)
+                                  : ""),
+                              IconButton(
+                                icon: const Icon(FluentIcons.calendar),
+                                onPressed: () {
+                                  CustomDatePicker.singleDatePicker(
+                                    context,
+                                    initialSelectedDate: endDate,
+                                    onSubmit: (value) {
+                                      setState(() {
+                                        endDate = value != null
+                                            ? DateTime.parse(value.toString())
+                                            : null;
+                                      });
+                                      Navigator.of(context).pop();
+                                    },
+                                  );
+                                },
+                                style: ButtonStyle(
+                                  padding:
+                                      ButtonState.all(const EdgeInsets.all(5)),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
+                      ),
+                      SizedBox(
+                        width: 10.h,
                       ),
                       IconButton(
                           icon: const Icon(FluentIcons.search),
+                          style: ButtonStyle(
+                            iconSize: ButtonState.all(20),
+                          ),
                           onPressed: () {
                             if (currentIndex == 0) {
                               context.read<OrdersBloc>().add(
@@ -108,11 +171,6 @@ class _OrderScreenState extends State<OrderScreen> {
                   Button(
                     child: const Icon(FluentIcons.refresh),
                     onPressed: () {
-                      setState(() {
-                        startDate =
-                            DateTime.now().subtract(const Duration(days: 14));
-                        endDate = DateTime.now().add(const Duration(days: 30));
-                      });
                       gridKey.currentState!.refresh(false);
                     },
                   ),
@@ -122,7 +180,25 @@ class _OrderScreenState extends State<OrderScreen> {
             content: TabView(
               currentIndex: currentIndex,
               closeButtonVisibility: CloseButtonVisibilityMode.never,
-              onChanged: (index) => setState(() => currentIndex = index),
+              onChanged: (index) {
+                DateTime? sDate;
+                DateTime? eDate;
+                if (index == 0) {
+                  sDate = null;
+                  eDate = null;
+                } else if (index == 1) {
+                  sDate = null;
+                  eDate = null;
+                } else {
+                  sDate = DateTime.now();
+                  eDate = DateTime.now();
+                }
+                setState(() {
+                  currentIndex = index;
+                  startDate = sDate;
+                  endDate = eDate;
+                });
+              },
               tabs: [
                 Tab(
                   icon: const Icon(FluentIcons.add_to_shopping_list),

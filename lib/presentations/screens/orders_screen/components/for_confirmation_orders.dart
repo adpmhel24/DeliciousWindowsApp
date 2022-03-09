@@ -20,14 +20,11 @@ import '../order_details/order_details_edittable/order_details.dart';
 
 class ForConfirmation extends StatefulWidget {
   const ForConfirmation(
-      {Key? key,
-      required this.gridKey,
-      required this.startDate,
-      required this.endDate})
+      {Key? key, required this.gridKey, this.startDate, this.endDate})
       : super(key: key);
   final GlobalKey<SfDataGridState> gridKey;
-  final DateTime startDate;
-  final DateTime endDate;
+  final DateTime? startDate;
+  final DateTime? endDate;
 
   @override
   State<ForConfirmation> createState() => _ForConfirmationState();
@@ -49,6 +46,7 @@ class _ForConfirmationState extends State<ForConfirmation> {
     OrderTableHeader.transdate: double.nan,
     OrderTableHeader.deliveryDate: double.nan,
     OrderTableHeader.custCode: double.nan,
+    OrderTableHeader.customerType: double.nan,
     OrderTableHeader.details: double.nan,
     OrderTableHeader.subtotal: double.nan,
     OrderTableHeader.delfee: double.nan,
@@ -60,179 +58,6 @@ class _ForConfirmationState extends State<ForConfirmation> {
     OrderTableHeader.address: double.nan,
     OrderTableHeader.user: double.nan,
   };
-
-  List<GridColumn> columnNames() {
-    return [
-      GridColumn(
-        width: columnWidths[OrderTableHeader.id]!,
-        columnName: OrderTableHeader.id,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.id,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.transdate]!,
-        columnName: OrderTableHeader.transdate,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.transdate,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.deliveryDate]!,
-        columnName: OrderTableHeader.deliveryDate,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.deliveryDate,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.custCode]!,
-        columnName: OrderTableHeader.custCode,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.custCode,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.details]!,
-        columnName: OrderTableHeader.details,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.details,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.subtotal]!,
-        columnName: OrderTableHeader.subtotal,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.subtotal,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.delfee]!,
-        columnName: OrderTableHeader.delfee,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.delfee,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.otherfee]!,
-        columnName: OrderTableHeader.otherfee,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.otherfee,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.doctotal]!,
-        columnName: OrderTableHeader.doctotal,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.doctotal,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.deliveryMethod]!,
-        columnName: OrderTableHeader.deliveryMethod,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.deliveryMethod,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.paymentMethod]!,
-        columnName: OrderTableHeader.paymentMethod,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.paymentMethod,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.remarks]!,
-        columnName: OrderTableHeader.remarks,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.remarks,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.address]!,
-        columnName: OrderTableHeader.address,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.address,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-      GridColumn(
-        width: columnWidths[OrderTableHeader.user]!,
-        columnName: OrderTableHeader.user,
-        label: Container(
-          padding: const EdgeInsets.all(8.0),
-          alignment: Alignment.center,
-          child: const Text(
-            OrderTableHeader.user,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-        ),
-      ),
-    ];
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -298,7 +123,7 @@ class _ForConfirmationState extends State<ForConfirmation> {
                 },
                 allowPullToRefresh: true,
                 isScrollbarAlwaysShown: true,
-                columns: columnNames(),
+                columns: OrderTableHeader.forConfirmationColumns(columnWidths),
                 columnWidthMode: ColumnWidthMode.auto,
                 allowSwiping: true,
                 swipeMaxOffset: 100.0,
@@ -442,6 +267,9 @@ class OrdersDataSource extends DataGridSource {
                   value: DateFormat("MM/dd/yyyy").format(e.deliveryDate!)),
               DataGridCell<String>(
                   columnName: OrderTableHeader.custCode, value: e.custCode),
+              DataGridCell<String>(
+                  columnName: OrderTableHeader.customerType,
+                  value: e.customerType),
               DataGridCell<String>(
                   columnName: OrderTableHeader.details, value: e.details),
               DataGridCell<String>(

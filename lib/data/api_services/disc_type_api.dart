@@ -8,7 +8,6 @@ class DiscountTypeAPI {
   Dio dio = DioSettings.dio();
 
   Future<Response> getAllDiscType({required String token}) async {
-    Dio dio = DioSettings.dio();
     Response response;
     try {
       response = await dio.get(

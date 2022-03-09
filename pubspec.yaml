@@ -43,6 +43,7 @@ dependencies:
   fluent_ui: ^3.9.0
   
   flutter_bloc: ^8.0.1
+  flutter_custom_cards: ^0.2.1
   flutter_localizations: 
     sdk: flutter
     version: ^0.0.0
@@ -52,10 +53,12 @@ dependencies:
   intl: ^0.17.0
   url_launcher: ^6.0.20
   equatable: ^2.0.3
+  json_annotation: ^4.4.0
   json_serializable: ^6.1.4
   provider: ^6.0.2
   shared_preferences: ^2.0.13
   syncfusion_flutter_datagrid: ^19.4.52
+  syncfusion_flutter_datepicker: ^19.4.55
   window_manager:
     git:
       url: https://github.com/leanflutter/window_manager.git
@@ -97,7 +100,7 @@ msix_config:
   display_name: Delicious Inventory System
   publisher_display_name: RFCatalogo
   identity_name: 31060RFCatalogo.DeliciousInventorySystem
-  msix_version: 1.1.0.0
+  msix_version: 1.1.1.0
   publisher: CN=1F5F85EB-9196-478E-BFEA-C10BB840B6A5
   logo_path: assets/images/logo.png
   capabilities: internetClient
