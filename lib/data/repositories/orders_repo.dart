@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:delicious_inventory_system/data/models/order_attachment/order_attachment_model.dart';
+
 import '/data/models/orders/order_model.dart';
 import 'package:dio/dio.dart';
 import 'dart:convert';
@@ -52,5 +54,26 @@ class OrdersRepository {
     } on HttpException catch (e) {
       throw HttpException(e.message);
     }
+  }
+
+  Future<List<OrderAttachmentModel>> fetchAttachments(int orderId) async {
+    Response response;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String token = json.decode(prefs.getString("userData")!)["token"];
+    List<OrderAttachmentModel> attachments = [];
+
+    try {
+      response =
+          await _ordersAPI.getOrderAttachmentByOrderId(token, orderId: orderId);
+      if (response.statusCode == 200) {
+        attachments = List<OrderAttachmentModel>.from(response.data['data']
+            .map((e) => OrderAttachmentModel.fromJson(e))).toList();
+      } else {
+        throw HttpException(response.data['message']);
+      }
+    } on HttpException catch (e) {
+      throw HttpException(e.message);
+    }
+    return attachments;
   }
 }

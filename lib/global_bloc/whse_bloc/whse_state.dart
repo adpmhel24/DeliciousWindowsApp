@@ -9,9 +9,9 @@ abstract class WarehouseState extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitState extends WarehouseState {}
+class WhseInitState extends WarehouseState {}
 
-class LoadingState extends WarehouseState {}
+class WhseLoadingState extends WarehouseState {}
 
 class WarehouseLoadedState extends WarehouseState {
   final List<WarehouseModel> warehouses;
@@ -22,10 +22,10 @@ class WarehouseLoadedState extends WarehouseState {
   List<Object?> get props => [warehouses];
 }
 
-class ErrorState extends WarehouseState {
+class WhseErrorState extends WarehouseState {
   final String message;
 
-  ErrorState(this.message);
+  WhseErrorState(this.message);
   @override
   List<Object?> get props => [message];
 }

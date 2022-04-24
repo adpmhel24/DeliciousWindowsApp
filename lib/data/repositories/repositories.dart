@@ -8,3 +8,4 @@ export 'whse_repo.dart';
 export 'sales_repo.dart';
 export 'customers_repo.dart';
 export 'customer_types_repo.dart';
+export 'ph_location_repo.dart';

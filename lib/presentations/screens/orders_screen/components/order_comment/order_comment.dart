@@ -1,6 +1,5 @@
 import '/data/models/models.dart';
-import '/presentations/screens/orders_screen/order_comment_bloc/order_comment_bloc.dart';
-import '/presentations/screens/orders_screen/order_comment_bloc/order_comment_state.dart';
+import '../order_comment_bloc/bloc.dart';
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';

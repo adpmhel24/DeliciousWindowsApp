@@ -9,9 +9,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../utils/currency_formater.dart';
-import '../../../../widgets/custom_dialog.dart';
-import '../../../../widgets/info_label_row.dart';
+import '../../../../../utils/currency_formater.dart';
+import '../../../../../widgets/custom_dialog.dart';
+import '../../../../../widgets/info_label_row.dart';
 import '../order_bloc/bloc.dart';
 import 'order_rows_read_only.dart';
 
@@ -227,7 +227,7 @@ class _OrderDetailsReadOnlyState extends State<OrderDetailsReadOnly> {
                                           message: state.message,
                                           actions: [
                                             Button(
-                                                child: const Text('Okay'),
+                                                child: const Text('OK'),
                                                 onPressed: () {
                                                   Navigator.of(context)
                                                     ..pop()

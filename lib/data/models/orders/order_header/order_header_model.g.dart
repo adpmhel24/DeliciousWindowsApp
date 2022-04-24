@@ -45,6 +45,7 @@ OrderHeaderModel _$OrderHeaderModelFromJson(Map<String, dynamic> json) =>
       dateCanceled: json['date_canceled'] == null
           ? null
           : DateTime.parse(json['date_canceled'] as String),
+      attachmentCount: json['attachment_count'] as int?,
     )
       ..contactNumber = json['contact_number'] as String?
       ..paidAmount = (json['paid_amount'] as num?)?.toDouble()
@@ -90,6 +91,8 @@ Map<String, dynamic> _$OrderHeaderModelToJson(OrderHeaderModel instance) {
   val['payment_reference'] = instance.paymentReference;
   writeNotNull(
       'sales_reference', OrderHeaderModel.toNull(instance.salesReference));
+  writeNotNull(
+      'attachment_count', OrderHeaderModel.toNull(instance.attachmentCount));
   writeNotNull('user', OrderHeaderModel.toNull(instance.user));
   writeNotNull('confirmed_by', OrderHeaderModel.toNull(instance.confirmedBy));
   writeNotNull('dispatched_by', OrderHeaderModel.toNull(instance.dispatchedBy));

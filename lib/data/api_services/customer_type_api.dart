@@ -1,4 +1,4 @@
-import 'dart:_http';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 
@@ -13,12 +13,16 @@ class CustomerTypeAPI {
   }) async {
     Response response;
     try {
-      response = await dio.post('/api/custtype/new',
-          data: data,
-          options: Options(headers: {
+      response = await dio.post(
+        '/api/custtype/new',
+        data: data,
+        options: Options(
+          headers: {
             "Authorization": "Bearer " + token,
             "Content-Type": "application/json",
-          }));
+          },
+        ),
+      );
     } on DioError catch (e) {
       if (e.response != null) {
         if (e.response!.data.runtimeType != String) {

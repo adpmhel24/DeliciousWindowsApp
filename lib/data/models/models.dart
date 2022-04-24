@@ -9,3 +9,5 @@ export 'orders/order_model.dart';
 export 'customer/customer_model.dart';
 export 'customer/customer_address_model.dart';
 export 'customer_type/customer_type_model.dart';
+export 'ph_location/brgy/brgy_model.dart';
+export 'ph_location/city_municipality/city_municipality_model.dart';

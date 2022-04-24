@@ -9,11 +9,15 @@ part of 'customer_address_model.dart';
 CustomerAddressModel _$CustomerAddressModelFromJson(
         Map<String, dynamic> json) =>
     CustomerAddressModel(
+      id: json['id'] as int?,
       uid: json['uid'] as String? ?? '',
       streetAddress: json['street_address'] as String?,
       cityMunicipality: json['city_municipality'] as String?,
       brgy: json['brgy'] as String?,
       otherDetails: json['other_details'] as String?,
+      deliveryFee: (json['delivery_fee'] as num?)?.toDouble(),
+      isDefault: json['is_default'] as bool?,
+      customerId: json['customer_id'] as int?,
     );
 
 Map<String, dynamic> _$CustomerAddressModelToJson(
@@ -27,9 +31,13 @@ Map<String, dynamic> _$CustomerAddressModelToJson(
   }
 
   writeNotNull('uid', CustomerAddressModel.toNull(instance.uid));
+  writeNotNull('id', CustomerAddressModel.toNull(instance.id));
+  writeNotNull('customer_id', CustomerAddressModel.toNull(instance.customerId));
   val['street_address'] = instance.streetAddress;
   val['city_municipality'] = instance.cityMunicipality;
   val['brgy'] = instance.brgy;
   val['other_details'] = instance.otherDetails;
+  val['delivery_fee'] = instance.deliveryFee;
+  val['is_default'] = instance.isDefault;
   return val;
 }

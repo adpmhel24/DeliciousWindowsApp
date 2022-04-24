@@ -15,8 +15,8 @@ class CustomDatePicker {
         return m.Dialog(
           alignment: Alignment.center,
           child: Container(
-            height: 300.w,
-            width: 150.w,
+            height: 300,
+            width: 300,
             padding: EdgeInsets.all(10.r),
             child: SfDateRangePicker(
               headerHeight: 60,

@@ -11,8 +11,8 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../data/repositories/repositories.dart';
 import 'components/for_dispatch_orders.dart';
-import 'order_comment_bloc/bloc.dart';
-import 'order_details/order_bloc/bloc.dart';
+import './components/order_comment_bloc/bloc.dart';
+import './components/order_details/order_bloc/bloc.dart';
 import './components/canceled_orders.dart';
 import './components/completed_orders.dart';
 import './components/for_confirmation_orders.dart';
@@ -65,38 +65,39 @@ class _OrderScreenState extends State<OrderScreen> {
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       SizedBox(
-                        width: 150.w,
-                        child: LabelInfo(
-                          label: "Start Delivery Date",
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(startDate != null
-                                  ? DateFormat("MM/dd/yyyy").format(startDate!)
-                                  : ""),
-                              IconButton(
-                                icon: const Icon(FluentIcons.calendar),
-                                onPressed: () {
-                                  CustomDatePicker.singleDatePicker(
-                                    context,
-                                    initialSelectedDate: startDate,
-                                    onSubmit: (value) {
-                                      setState(() {
-                                        startDate = value != null
-                                            ? DateTime.parse(value.toString())
-                                            : null;
-                                      });
+                        width: 200,
+                        child: MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () {
+                              CustomDatePicker.singleDatePicker(
+                                context,
+                                initialSelectedDate: startDate,
+                                onSubmit: (value) {
+                                  setState(() {
+                                    startDate = value != null
+                                        ? DateTime.parse(value.toString())
+                                        : null;
+                                  });
 
-                                      Navigator.of(context).pop();
-                                    },
-                                  );
+                                  Navigator.of(context).pop();
                                 },
-                                style: ButtonStyle(
-                                  padding:
-                                      ButtonState.all(const EdgeInsets.all(5)),
-                                ),
+                              );
+                            },
+                            child: LabelInfo(
+                              label: "Start Delivery Date",
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(startDate != null
+                                      ? DateFormat("MM/dd/yyyy")
+                                          .format(startDate!)
+                                      : ""),
+                                  const Icon(FluentIcons.calendar),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
@@ -104,37 +105,38 @@ class _OrderScreenState extends State<OrderScreen> {
                         width: 10.h,
                       ),
                       SizedBox(
-                        width: 150.w,
-                        child: LabelInfo(
-                          label: "End Delivery Date",
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(endDate != null
-                                  ? DateFormat("MM/dd/yyyy").format(endDate!)
-                                  : ""),
-                              IconButton(
-                                icon: const Icon(FluentIcons.calendar),
-                                onPressed: () {
-                                  CustomDatePicker.singleDatePicker(
-                                    context,
-                                    initialSelectedDate: endDate,
-                                    onSubmit: (value) {
-                                      setState(() {
-                                        endDate = value != null
-                                            ? DateTime.parse(value.toString())
-                                            : null;
-                                      });
-                                      Navigator.of(context).pop();
-                                    },
-                                  );
+                        width: 200,
+                        child: MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () {
+                              CustomDatePicker.singleDatePicker(
+                                context,
+                                initialSelectedDate: endDate,
+                                onSubmit: (value) {
+                                  setState(() {
+                                    endDate = value != null
+                                        ? DateTime.parse(value.toString())
+                                        : null;
+                                  });
+                                  Navigator.of(context).pop();
                                 },
-                                style: ButtonStyle(
-                                  padding:
-                                      ButtonState.all(const EdgeInsets.all(5)),
-                                ),
-                              )
-                            ],
+                              );
+                            },
+                            child: LabelInfo(
+                              label: "End Delivery Date",
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(endDate != null
+                                      ? DateFormat("MM/dd/yyyy")
+                                          .format(endDate!)
+                                      : ""),
+                                  const Icon(FluentIcons.calendar),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ),

@@ -1,6 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import '../presentations/screens/home_screen/home_screen.dart';
-import '../presentations/screens/master_data/customers/customer_screen.dart';
+import '../presentations/screens/master_data/customers/customers_screen/customers_screen.dart';
 import '../presentations/screens/master_data/master_data_home.dart';
 
 import '../presentations/screens/main_screen.dart';

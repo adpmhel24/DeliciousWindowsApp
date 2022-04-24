@@ -1,3 +1,6 @@
+import 'package:badges/badges.dart';
+
+import '../order_attachment/order_attachment_viewer.dart';
 import '/data/models/models.dart';
 import '/presentations/screens/orders_screen/orders_bloc/blocs.dart';
 
@@ -15,8 +18,8 @@ import '../../../utils/size_config.dart';
 import '../../../widgets/custom_dialog.dart';
 import '../../../widgets/custom_large_dialog.dart';
 import '../../../widgets/remarks_dialog.dart';
-import '../order_details/order_bloc/bloc.dart';
-import '../order_details/order_details_read_only/order_details_read_only.dart';
+import './order_details/order_bloc/bloc.dart';
+import './order_details/order_details_read_only/order_details_read_only.dart';
 
 class ForDispatch extends StatefulWidget {
   const ForDispatch({
@@ -54,6 +57,7 @@ class _ForDispatchState extends State<ForDispatch> {
     OrderTableHeader.balance: double.nan,
     OrderTableHeader.deliveryMethod: double.nan,
     OrderTableHeader.paymentMethod: double.nan,
+    OrderTableHeader.attachments: 100.0,
     OrderTableHeader.remarks: double.nan,
     OrderTableHeader.address: double.nan,
     OrderTableHeader.user: double.nan,
@@ -125,7 +129,7 @@ class _ForDispatchState extends State<ForDispatch> {
                       message: "Successfully canceled",
                       actions: [
                         Button(
-                            child: const Text('Okay'),
+                            child: const Text('OK'),
                             onPressed: () {
                               widget.gridKey.currentState!.refresh(false);
 
@@ -173,7 +177,7 @@ class _ForDispatchState extends State<ForDispatch> {
                                   Navigator.of(context).pop();
                                 }),
                             Button(
-                                child: const Text('Okay'),
+                                child: const Text('OK'),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                   showDialog(
@@ -272,6 +276,38 @@ class OrdersDataSource extends DataGridSource {
               DataGridCell<String>(
                   columnName: OrderTableHeader.paymentMethod,
                   value: e.paymentMethod),
+              DataGridCell<Widget>(
+                columnName: OrderTableHeader.attachments,
+                value: IconButton(
+                  icon: Badge(
+                    badgeContent: Text(
+                      "${e.attachmentCount ?? 0}",
+                      style: const TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    badgeColor: Colors.green.lighter,
+                    child: const Icon(
+                      FluentIcons.file_image,
+                      size: 20,
+                    ),
+                  ),
+                  onPressed: e.attachmentCount == 0
+                      ? null
+                      : () {
+                          showDialog(
+                              context: _ordersContext,
+                              barrierDismissible: true,
+                              builder: (_) {
+                                return LargeDialog(
+                                  child: OrderAttachmentViewer(
+                                    orderId: e.id!,
+                                  ),
+                                );
+                              });
+                        },
+                ),
+              ),
               DataGridCell<String>(
                   columnName: OrderTableHeader.remarks, value: e.remarks),
               DataGridCell<String>(
@@ -308,12 +344,15 @@ class OrdersDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
-        alignment: (dataGridCell.columnName == 'id' ||
-                dataGridCell.columnName == 'custCode')
+        alignment: dataGridCell.columnName == OrderTableHeader.id
             ? Alignment.centerRight
-            : Alignment.centerLeft,
+            : dataGridCell.columnName == OrderTableHeader.attachments
+                ? Alignment.center
+                : Alignment.centerLeft,
         padding: const EdgeInsets.all(16.0),
-        child: Text(dataGridCell.value.toString()),
+        child: dataGridCell.value.runtimeType != IconButton
+            ? Text(dataGridCell.value.toString())
+            : dataGridCell.value,
       );
     }).toList());
   }

@@ -1,12 +1,9 @@
+import 'package:badges/badges.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../data/repositories/repositories.dart';
-import '../../../utils/responsive.dart';
-import '../../../widgets/remarks_dialog.dart';
+import '../order_attachment/order_attachment_viewer.dart';
 import '/data/models/models.dart';
-import '/presentations/screens/orders_screen/orders_bloc/blocs.dart';
-import '/presentations/screens/orders_screen/order_details/order_bloc/bloc.dart';
-import '/presentations/utils/size_config.dart';
+
 import 'package:fluent_ui/fluent_ui.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -16,7 +13,13 @@ import '../../../utils/constant.dart';
 import '../../../utils/currency_formater.dart';
 import '../../../widgets/custom_dialog.dart';
 import '../../../widgets/custom_large_dialog.dart';
-import '../order_details/order_details_edittable/order_details.dart';
+import '../../../../data/repositories/repositories.dart';
+import '../../../utils/responsive.dart';
+import '../../../widgets/remarks_dialog.dart';
+import './order_details/order_details_edittable/order_details.dart';
+import './order_details/order_bloc/bloc.dart';
+import '/presentations/utils/size_config.dart';
+import '../orders_bloc/blocs.dart';
 
 class ForConfirmation extends StatefulWidget {
   const ForConfirmation(
@@ -54,6 +57,7 @@ class _ForConfirmationState extends State<ForConfirmation> {
     OrderTableHeader.doctotal: double.nan,
     OrderTableHeader.deliveryMethod: double.nan,
     OrderTableHeader.paymentMethod: double.nan,
+    OrderTableHeader.attachments: 100.0,
     OrderTableHeader.remarks: double.nan,
     OrderTableHeader.address: double.nan,
     OrderTableHeader.user: double.nan,
@@ -85,7 +89,7 @@ class _ForConfirmationState extends State<ForConfirmation> {
                     message: "Successfully canceled",
                     actions: [
                       Button(
-                          child: const Text('Okay'),
+                          child: const Text('OK'),
                           onPressed: () {
                             widget.gridKey.currentState!.refresh(false);
 
@@ -143,7 +147,7 @@ class _ForConfirmationState extends State<ForConfirmation> {
                                   Navigator.of(context).pop();
                                 }),
                             Button(
-                                child: const Text('Okay'),
+                                child: const Text('OK'),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                   showDialog(
@@ -257,50 +261,85 @@ class OrdersDataSource extends DataGridSource {
       {required List<OrderHeaderModel> orders, this.startDate, this.endDate}) {
     _ordersContext = ordersContext;
     dataGridRows = orders
-        .map<DataGridRow>((e) => DataGridRow(cells: [
-              DataGridCell<int>(columnName: OrderTableHeader.id, value: e.id),
-              DataGridCell<String>(
-                  columnName: OrderTableHeader.transdate,
-                  value: DateFormat("MM/dd/yyyy HH:MM").format(e.transdate!)),
-              DataGridCell<String>(
-                  columnName: OrderTableHeader.deliveryDate,
-                  value: DateFormat("MM/dd/yyyy").format(e.deliveryDate!)),
-              DataGridCell<String>(
-                  columnName: OrderTableHeader.custCode, value: e.custCode),
-              DataGridCell<String>(
-                  columnName: OrderTableHeader.customerType,
-                  value: e.customerType),
-              DataGridCell<String>(
-                  columnName: OrderTableHeader.details, value: e.details),
-              DataGridCell<String>(
-                  columnName: OrderTableHeader.subtotal,
-                  value: formatStringToDecimal(e.subtotal.toString(),
-                      hasCurrency: true)),
-              DataGridCell<String>(
-                  columnName: OrderTableHeader.delfee,
-                  value: formatStringToDecimal(e.delfee.toString(),
-                      hasCurrency: true)),
-              DataGridCell<String>(
-                  columnName: OrderTableHeader.otherfee,
-                  value: formatStringToDecimal(e.otherfee.toString(),
-                      hasCurrency: true)),
-              DataGridCell<String>(
-                  columnName: OrderTableHeader.doctotal,
-                  value: formatStringToDecimal(e.doctotal.toString(),
-                      hasCurrency: true)),
-              DataGridCell<String>(
-                  columnName: OrderTableHeader.deliveryMethod,
-                  value: e.deliveryMethod),
-              DataGridCell<String>(
-                  columnName: OrderTableHeader.paymentMethod,
-                  value: e.paymentMethod),
-              DataGridCell<String>(
-                  columnName: OrderTableHeader.remarks, value: e.remarks),
-              DataGridCell<String>(
-                  columnName: OrderTableHeader.address, value: e.address),
-              DataGridCell<String>(
-                  columnName: OrderTableHeader.user, value: e.user),
-            ]))
+        .map<DataGridRow>(
+          (e) => DataGridRow(cells: [
+            DataGridCell<int>(columnName: OrderTableHeader.id, value: e.id),
+            DataGridCell<String>(
+                columnName: OrderTableHeader.transdate,
+                value: DateFormat("MM/dd/yyyy HH:MM").format(e.transdate!)),
+            DataGridCell<String>(
+                columnName: OrderTableHeader.deliveryDate,
+                value: DateFormat("MM/dd/yyyy").format(e.deliveryDate!)),
+            DataGridCell<String>(
+                columnName: OrderTableHeader.custCode, value: e.custCode),
+            DataGridCell<String>(
+                columnName: OrderTableHeader.customerType,
+                value: e.customerType),
+            DataGridCell<String>(
+                columnName: OrderTableHeader.details, value: e.details),
+            DataGridCell<String>(
+              columnName: OrderTableHeader.subtotal,
+              value: formatStringToDecimal(e.subtotal.toString(),
+                  hasCurrency: true),
+            ),
+            DataGridCell<String>(
+                columnName: OrderTableHeader.delfee,
+                value: formatStringToDecimal(e.delfee.toString(),
+                    hasCurrency: true)),
+            DataGridCell<String>(
+                columnName: OrderTableHeader.otherfee,
+                value: formatStringToDecimal(e.otherfee.toString(),
+                    hasCurrency: true)),
+            DataGridCell<String>(
+                columnName: OrderTableHeader.doctotal,
+                value: formatStringToDecimal(e.doctotal.toString(),
+                    hasCurrency: true)),
+            DataGridCell<String>(
+                columnName: OrderTableHeader.deliveryMethod,
+                value: e.deliveryMethod),
+            DataGridCell<String>(
+                columnName: OrderTableHeader.paymentMethod,
+                value: e.paymentMethod),
+            DataGridCell<Widget>(
+              columnName: OrderTableHeader.attachments,
+              value: IconButton(
+                icon: Badge(
+                  badgeContent: Text(
+                    "${e.attachmentCount ?? 0}",
+                    style: const TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                  badgeColor: Colors.green.lighter,
+                  child: const Icon(
+                    FluentIcons.file_image,
+                    size: 20,
+                  ),
+                ),
+                onPressed: e.attachmentCount == 0
+                    ? null
+                    : () {
+                        showDialog(
+                            context: _ordersContext,
+                            barrierDismissible: true,
+                            builder: (_) {
+                              return LargeDialog(
+                                child: OrderAttachmentViewer(
+                                  orderId: e.id!,
+                                ),
+                              );
+                            });
+                      },
+              ),
+            ),
+            DataGridCell<String>(
+                columnName: OrderTableHeader.remarks, value: e.remarks),
+            DataGridCell<String>(
+                columnName: OrderTableHeader.address, value: e.address),
+            DataGridCell<String>(
+                columnName: OrderTableHeader.user, value: e.user),
+          ]),
+        )
         .toList();
   }
 
@@ -322,12 +361,15 @@ class OrdersDataSource extends DataGridSource {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((dataGridCell) {
       return Container(
-        alignment: (dataGridCell.columnName == 'id' ||
-                dataGridCell.columnName == 'custCode')
+        alignment: dataGridCell.columnName == OrderTableHeader.id
             ? Alignment.centerRight
-            : Alignment.centerLeft,
+            : dataGridCell.columnName == OrderTableHeader.attachments
+                ? Alignment.center
+                : Alignment.centerLeft,
         padding: const EdgeInsets.all(16.0),
-        child: Text(dataGridCell.value.toString()),
+        child: dataGridCell.value.runtimeType != IconButton
+            ? Text(dataGridCell.value.toString())
+            : dataGridCell.value,
       );
     }).toList());
   }

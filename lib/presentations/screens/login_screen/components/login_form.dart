@@ -49,7 +49,7 @@ class _LoginFormState extends State<LoginForm> {
         } else if (state.status.isSubmissionFailure) {
           CustomDialog.error(context, message: state.message, actions: [
             Button(
-                child: const Text('Ok'),
+                child: const Text('OK'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 })
@@ -63,6 +63,7 @@ class _LoginFormState extends State<LoginForm> {
               autovalidateMode: AutovalidateMode.always,
               controller: _usernameController,
               header: "Username*",
+              autofocus: true,
               onChanged: (_) {
                 context.read<LoginFormBloc>().add(
                       UsernameChanged(_usernameController),

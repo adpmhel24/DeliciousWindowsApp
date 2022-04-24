@@ -7,11 +7,13 @@ class LabelInfo extends StatelessWidget {
     required this.label,
     this.child,
     this.labelStyle,
+    this.hasBackGround = true,
   }) : super(key: key);
 
   final String label;
   final TextStyle? labelStyle;
   final Widget? child;
+  final bool hasBackGround;
 
   @override
   Widget build(BuildContext context) {
@@ -20,18 +22,20 @@ class LabelInfo extends StatelessWidget {
       children: [
         Text(
           label,
-          style: labelStyle ?? TextStyle(fontSize: 11.sp),
+          style: labelStyle ?? const TextStyle(fontSize: 12),
         ),
         SizedBox(
           height: 2.h,
         ),
         Container(
           width: double.infinity,
-          padding: EdgeInsets.all(10.h),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.r),
-            color: const Color(0xFFeeeee4),
-          ),
+          padding: const EdgeInsets.all(10),
+          decoration: hasBackGround
+              ? BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: const Color(0xFFeeeee4),
+                )
+              : null,
           child: child,
         )
       ],

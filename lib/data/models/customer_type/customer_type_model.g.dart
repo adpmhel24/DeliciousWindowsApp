@@ -10,7 +10,7 @@ CustomerTypeModel _$CustomerTypeModelFromJson(Map<String, dynamic> json) =>
     CustomerTypeModel(
       id: json['id'] as int,
       code: json['code'] as String,
-      name: json['name'] as String,
+      name: json['name'] as String?,
     );
 
 Map<String, dynamic> _$CustomerTypeModelToJson(CustomerTypeModel instance) {

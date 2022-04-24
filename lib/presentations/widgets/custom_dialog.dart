@@ -6,11 +6,14 @@ class CustomDialog {
     return showDialog(
       context: context,
       builder: (context) {
-        return ContentDialog(
-          content: SizedBox(
-            height: 15.r,
-            width: 15.r,
-            child: const ProgressRing(),
+        return WillPopScope(
+          onWillPop: () async => false,
+          child: ContentDialog(
+            content: SizedBox(
+              height: 15.r,
+              width: 15.r,
+              child: const ProgressRing(),
+            ),
           ),
         );
       },
@@ -35,7 +38,7 @@ class CustomDialog {
           actions: actions ??
               [
                 Button(
-                    child: const Text('Ok'),
+                    child: const Text('OK'),
                     onPressed: () {
                       Navigator.of(context).pop();
                     })
@@ -64,7 +67,7 @@ class CustomDialog {
             actions: actions ??
                 [
                   Button(
-                      child: const Text('Ok'),
+                      child: const Text('Close'),
                       onPressed: () {
                         Navigator.of(context).pop();
                       })

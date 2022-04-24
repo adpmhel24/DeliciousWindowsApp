@@ -9,12 +9,12 @@ class CustomerTypeModel {
   @JsonKey(toJson: toNull, includeIfNull: false)
   int id;
   String code;
-  String name;
+  String? name;
 
   CustomerTypeModel({
     required this.id,
     required this.code,
-    required this.name,
+    this.name,
   });
 
   factory CustomerTypeModel.fromJson(Map<String, dynamic> json) =>

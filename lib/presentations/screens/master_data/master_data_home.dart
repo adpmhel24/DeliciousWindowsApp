@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:delicious_inventory_system/global_bloc/bloc.dart';
 import 'package:delicious_inventory_system/router/router.gr.dart';
 import 'package:fluent_ui/fluent_ui.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_cards/flutter_custom_cards.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 // import 'package:flutter/material.dart' as m;
@@ -42,6 +44,9 @@ List<Map<String, dynamic>> masterDataMenu(BuildContext context) {
       "icon": const Icon(FluentIcons.account_management),
       "onTap": () {
         router?.push(const CustomersScreenRoute());
+        context.read<CustomersBloc>().add(
+              FetchCustomerFromAPI(),
+            );
       }
     },
     {

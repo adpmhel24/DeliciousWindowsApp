@@ -5,13 +5,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:window_size/window_size.dart';
+import 'dart:io';
 
 import 'presentations/utils/size_config.dart';
 import 'router/router_guard.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  setWindowMinSize(const Size(1024, 640));
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    setWindowTitle('Delicious Inventory System');
+    setWindowMinSize(const Size(1024, 768));
+  }
   runApp(const MainApp());
 }
 

@@ -1,54 +1,66 @@
-// import 'dart:io';
+import 'dart:io';
 
-// import 'package:delicious_inventory_system/data/api_services/apis.dart';
-// import 'package:delicious_inventory_system/data/models/models.dart';
-// import 'package:dio/dio.dart';
+import 'package:delicious_inventory_system/data/api_services/apis.dart';
+import 'package:delicious_inventory_system/data/models/models.dart';
+import 'package:dio/dio.dart';
 
-// import 'repositories.dart';
+import 'repositories.dart';
 
-// class CustomerTypesRepo {
-//   List<CustomerTypeModel> _customerTypes = [];
-//   final CustomerTypeAPI _customerTypeAPI = CustomerTypeAPI();
-//   final String _token = AuthRepository().currentUser.token;
+class CustomerTypesRepo {
+  List<CustomerTypeModel> _customerTypes = [];
+  final CustomerTypeAPI _customerTypeAPI = CustomerTypeAPI();
+  final String _token = AuthRepository().currentUser.token;
 
-//   List<CustomerTypeModel> get customerTypes => _customerTypes;
+  List<CustomerTypeModel> get customerTypes => _customerTypes;
 
-//   Future<void> getAllCustomerType(Map<String, dynamic>? params) async {
-//     Response response;
-//     try {
-//       response =
-//           await _customerTypeAPI.getAllCustomerType(_token, params: params);
-//       _customerTypes = List<CustomerTypeModel>.from(
-//         response.data['data'].map(
-//           (e) => CustomerTypeModel.fromJson(e),
-//         ),
-//       );
-//     } on HttpException catch (e) {
-//       throw HttpException(e.message);
-//     }
-//   }
+  Future<void> getAllCustomerType([Map<String, dynamic>? params]) async {
+    Response response;
+    try {
+      response =
+          await _customerTypeAPI.getAllCustomerType(_token, params: params);
+      _customerTypes = List<CustomerTypeModel>.from(
+        response.data['data'].map(
+          (e) {
+            return CustomerTypeModel.fromJson(e);
+          },
+        ),
+      );
+      _customerTypes.insert(
+          0, CustomerTypeModel(id: -1, code: "All", name: "All"));
+    } on HttpException catch (e) {
+      throw HttpException(e.message);
+    }
+  }
 
-//   Future<String> addNewCustType(Map<String, dynamic> data) async {
-//     Response response;
-//     String message = 'Unknown error';
-//     try {
-//       response = await _customerTypeAPI.addNewCustomerType(_token, data: data);
-//       if (response.statusCode == 201 || response.statusCode == 200) {
-//         message = response.data['message'];
-//         _customerTypes.add(CustomerTypeModel.fromJson(response.data['data']));
-//       }
-//     } on HttpException catch (e) {
-//       throw HttpException(e.message);
-//     }
-//     return message;
-//   }
+  String? getCustTypeNameById(int id) {
+    return _customerTypes.firstWhere((e) => e.id == id).name;
+  }
 
-//   ///Singleton factory
-//   static final CustomerTypesRepo _instance = CustomerTypesRepo._internal();
+  CustomerTypeModel? getCustTypeById(int id) {
+    return _customerTypes.firstWhere((e) => e.id == id);
+  }
 
-//   factory CustomerTypesRepo() {
-//     return _instance;
-//   }
+  Future<String> addNewCustType(Map<String, dynamic> data) async {
+    Response response;
+    String message = 'Unknown error';
+    try {
+      response = await _customerTypeAPI.addNewCustomerType(_token, data: data);
+      if (response.statusCode == 201 || response.statusCode == 200) {
+        message = response.data['message'];
+        _customerTypes.add(CustomerTypeModel.fromJson(response.data['data']));
+      }
+    } on HttpException catch (e) {
+      throw HttpException(e.message);
+    }
+    return message;
+  }
 
-//   CustomerTypesRepo._internal();
-// }
+  ///Singleton factory
+  static final CustomerTypesRepo _instance = CustomerTypesRepo._internal();
+
+  factory CustomerTypesRepo() {
+    return _instance;
+  }
+
+  CustomerTypesRepo._internal();
+}

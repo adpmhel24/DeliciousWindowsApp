@@ -4,40 +4,66 @@ part 'customer_base_model.g.dart';
 
 @JsonSerializable()
 class CustomerBaseModel {
-  final int id;
-  final String code;
-  final String? name;
+  int? id;
+
+  int? lineCount;
+
+  String? code;
+  String? name;
 
   @JsonKey(name: "first_name")
-  final String? firstName;
+  String? firstName;
 
   @JsonKey(name: "last_name")
-  final String? lastName;
+  String? lastName;
 
-  final double balance;
+  double? balance;
 
   @JsonKey(name: "dep_balance")
-  final double depositBalance;
+  double? depositBalance;
 
-  final String? email;
+  String? email;
 
   @JsonKey(name: "contact_number")
-  final String? contactNumber;
+  String? contactNumber;
+
+  @JsonKey(name: "cust_type")
+  int? custType;
+
+  String? custTypeName;
 
   @JsonKey(name: "customer_user")
-  final int? customerUser;
+  int? customerUser;
+
+  @JsonKey(name: "allowed_disc")
+  double? allowedDisc;
+
+  @JsonKey(name: "pickup_disc")
+  double? pickupDisc;
+
+  @JsonKey(name: "is_active")
+  bool isActive;
+
+  Map<String, dynamic>? user;
 
   CustomerBaseModel({
-    required this.id,
-    required this.code,
+    this.id,
+    this.lineCount,
+    this.code,
     this.name,
     this.firstName,
     this.lastName,
-    required this.balance,
-    required this.depositBalance,
+    this.balance,
+    this.depositBalance,
+    this.custType,
     this.email,
     this.contactNumber,
     this.customerUser,
+    this.custTypeName,
+    this.allowedDisc = 0.00,
+    this.pickupDisc = 0.00,
+    this.user,
+    this.isActive = true,
   });
 
   factory CustomerBaseModel.fromJson(Map<String, dynamic> json) =>

@@ -75,7 +75,7 @@ class _MainScreenState extends State<MainScreen> {
         final tabsRouter = AutoTabsRouter.of(context);
         return NavigationView(
           appBar: const NavigationAppBar(
-            automaticallyImplyLeading: true,
+            automaticallyImplyLeading: false,
           ),
           pane: NavigationPane(
             displayMode: PaneDisplayMode.compact,

@@ -17,7 +17,7 @@ import 'package:flutter/material.dart' as _i10;
 import '../presentations/screens/home_screen/home_screen.dart' as _i3;
 import '../presentations/screens/login_screen/login_screen.dart' as _i1;
 import '../presentations/screens/main_screen.dart' as _i2;
-import '../presentations/screens/master_data/customers/customer_screen.dart'
+import '../presentations/screens/master_data/customers/customers_screen/customers_screen.dart'
     as _i8;
 import '../presentations/screens/master_data/master_data_home.dart' as _i7;
 import '../presentations/screens/master_data/master_data_wrapper.dart' as _i6;

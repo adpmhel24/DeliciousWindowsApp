@@ -10,10 +10,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../utils/currency_formater.dart';
-import '../../../../widgets/info_label_row.dart';
-
 import '../order_bloc/bloc.dart';
+import '../../../../../utils/currency_formater.dart';
+import '../../../../../widgets/info_label_row.dart';
 import 'order_rows.dart';
 
 class OrderDetails extends StatefulWidget {
@@ -276,7 +275,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     message: state.message,
                                     actions: [
                                       Button(
-                                          child: const Text('Okay'),
+                                          child: const Text('OK'),
                                           onPressed: () {
                                             Navigator.of(context)
                                               ..pop()

@@ -10,12 +10,12 @@ class MasterDataWrapperScreen extends StatefulWidget {
 }
 
 class _MasterDataWrapperScreenState extends State<MasterDataWrapperScreen> {
-  final _innerRouterKey = GlobalKey<AutoRouterState>();
+  // final _innerRouterKey = GlobalKey<AutoRouterState>();
 
   @override
   Widget build(BuildContext context) {
-    return AutoRouter(
-      key: _innerRouterKey,
-    );
+    return const AutoRouter(
+        // key: _innerRouterKey,
+        );
   }
 }
